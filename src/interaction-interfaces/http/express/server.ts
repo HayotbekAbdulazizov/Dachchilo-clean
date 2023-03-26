@@ -14,8 +14,7 @@ export class Server implements IServer {
     private readonly app: Express ;
     private buildingController: IBuildingController;
 
-    constructor(
-    ){
+    constructor(){
         this.buildingController = new BuildingController()
         this.app = express()
     }
