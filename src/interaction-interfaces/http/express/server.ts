@@ -1,5 +1,5 @@
 import express, {Express, Request, Response} from "express";
-
+import { BuildingController, IBuildingController } from "./controllers/buildingController";
 
 
 export interface IServer {
@@ -12,10 +12,11 @@ export interface IServer {
 
 export class Server implements IServer {
     private readonly app: Express ;
+    private buildingController: IBuildingController;
 
     constructor(
-        // private buildingController: IBuildingController;
     ){
+        this.buildingController = new BuildingController()
         this.app = express()
     }
 
@@ -32,10 +33,7 @@ export class Server implements IServer {
     }
 
     private router(): void {
-        this.app.get('/buildings', async function (req: Request, res:Response){
-            const body = req.body
-            res.send('2112')
-        })
+        this.app.get('/buildings', this.buildingController.getAll.bind(this.buildingController))
     }
 
 }

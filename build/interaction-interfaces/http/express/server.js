@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
 const express_1 = __importDefault(require("express"));
+const buildingController_1 = require("./controllers/buildingController");
 class Server {
-    constructor(
-    // private buildingController: IBuildingController;
-    ) {
+    constructor() {
+        this.buildingController = new buildingController_1.BuildingController();
         this.app = (0, express_1.default)();
     }
     init() {
@@ -21,10 +21,7 @@ class Server {
         });
     }
     router() {
-        this.app.get('/buildings', async function (req, res) {
-            const body = req.body;
-            res.send('2112');
-        });
+        this.app.get('/buildings', this.buildingController.getAll.bind(this.buildingController));
     }
 }
 exports.Server = Server;
