@@ -1,7 +1,8 @@
 import {IBuildingDocument} from "../../../../domain/models/building";
 import { FilterQuery } from "mongoose"
 import { IBuildingRepository } from "../../../../domain/interfaces/repositories/BuildingRepository";
-import {BuildingRepositoryIns} from "../../../../infrastructure/mongoDB/repositories/buildingRepository";
+import {inject, injectable} from "inversify";
+import {symbols} from "../../../../dependencies/symbols";
 
 export interface IGetAllBuildingsUseCase{
     execute(query: FilterQuery<IBuildingDocument>): Promise<IBuildingDocument[]>
@@ -9,18 +10,20 @@ export interface IGetAllBuildingsUseCase{
 
 
 
-
+@injectable()
 export class GetAllBuildingsUseCase implements IGetAllBuildingsUseCase {
-    private buildingRepository: IBuildingRepository;
-    constructor() {
-        this.buildingRepository = BuildingRepositoryIns
-    }
+    constructor(
+        @inject<IBuildingRepository>(symbols.DB.repositories.buildingRepository)
+        private buildingRepository: IBuildingRepository,
+    ) {}
 
     async execute(query: FilterQuery<IBuildingDocument>): Promise<IBuildingDocument[]> {
-        return this.buildingRepository.getAll(query)
+        try{
+            return await this.buildingRepository.get(query)
+        }catch (err: any) {
+            throw new Error(err.message)
+        }
     }
 
 }
 
-
-export const GetAllBuildingsUseCaseIns = new GetAllBuildingsUseCase()

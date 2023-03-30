@@ -7,9 +7,10 @@ export const symbols = {
          building: {
              getAll: Symbol.for('getAllBuildingsUseCase'),
              create: Symbol.for('createBuildingUseCase'),
-             getOne: Symbol.for('getOneBuildingUseCase'),
-             removeOne: Symbol.for('removeOneBuildingUseCase'),
-             remove: Symbol.for('removeBuildingsUseCase')
+             updateById: Symbol.for('updateBuildingById'),
+             getById: Symbol.for('getBuildingByIdUseCase'),
+             deleteById: Symbol.for('removeOneBuildingUseCase'),
+             delete: Symbol.for('removeBuildingsUseCase')
          }
     },
 
@@ -18,6 +19,10 @@ export const symbols = {
         repositories: {
             buildingRepository: Symbol.for('BuildingRepository'),
         }
-    }
+    },
+
+
+    server: Symbol.for('Server'),
+
 
 }

@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const server_1 = require("./interaction-interfaces/http/express/server");
+const app_container_1 = require("./dependencies/app/app-container");
+const symbols_1 = require("./dependencies/symbols");
 async function start() {
-    const server = new server_1.Server();
+    app_container_1.AppContainer.loadAll();
+    await app_container_1.AppContainer.init();
+    const server = app_container_1.AppContainer.Services.get(symbols_1.symbols.server);
     server.init();
-    server.listen();
+    await server.listen();
 }
-start();
+setImmediate(start);

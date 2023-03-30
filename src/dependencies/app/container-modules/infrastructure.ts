@@ -3,6 +3,7 @@ import {MongoDriver, IMongoDriver} from "../../../infrastructure/mongoDB/driver"
 import {symbols} from "../../symbols";
 import {IBuildingRepository} from "../../../domain/interfaces/repositories/BuildingRepository";
 import {BuildingRepository} from "../../../infrastructure/mongoDB/repositories/buildingRepository";
+import "reflect-metadata";
 
 
 export const InfrastructureModule = new ContainerModule((bind: interfaces.Bind) => {
