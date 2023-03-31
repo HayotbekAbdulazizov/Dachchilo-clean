@@ -1,26 +1,22 @@
 import {IBuildingRepository} from "../../../domain/interfaces/repositories/BuildingRepository";
 import {IBuildingDocument, IBuildingInput} from "../../../domain/models/building";
-import {Expression, FilterQuery, Model, QueryOptions} from "mongoose";
+import {FilterQuery, Model, QueryOptions} from "mongoose";
 import {MongoDriver} from "../driver";
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
+import {symbols} from "../../../dependencies/symbols";
 
 
 @injectable()
 export class BuildingRepository implements IBuildingRepository {
     private model!: Model<IBuildingDocument>;
-    private db!: any;
 
 
-    constructor() {
-        this.db = new MongoDriver()
-        this.init()
-    }
-
-
-    private async init(){
-        await this.db.init()
+    constructor(
+        @inject<MongoDriver>(symbols.DB.driver) private db: MongoDriver
+    ) {
         this.model = this.db.buildingModel
     }
+
 
 
     async get(filter: FilterQuery<IBuildingDocument>, options: QueryOptions = {}): Promise<IBuildingDocument[]> {
@@ -62,8 +58,7 @@ export class BuildingRepository implements IBuildingRepository {
         try{
             const building  = await this.model.findOneAndUpdate(query, data, options)
             if (!building) {
-                console.log("-- Update --")
-                return null
+                throw new Error("Building was not found ")
             }
             return building
         } catch (err: any){
@@ -74,8 +69,7 @@ export class BuildingRepository implements IBuildingRepository {
 
     async deleteOne(query: FilterQuery<IBuildingDocument>, options: QueryOptions = {}): Promise<IBuildingDocument | null>{
         try{
-            const building = await this.model.findOneAndDelete(query, options)
-            return building;
+            return await this.model.findOneAndDelete(query, options);
         }catch (err: any) {
             throw new Error(err.message)
         }

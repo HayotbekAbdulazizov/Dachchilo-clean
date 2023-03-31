@@ -1,4 +1,4 @@
-import mongoose, {Types} from "mongoose";
+import mongoose from "mongoose";
 import {IBuildingDocument} from "./building";
 
 
@@ -10,7 +10,7 @@ export enum CATEGORY_TYPE {
 
 export interface ICategoryInput {
     title: string,
-    parentId?: ICategoryDocument['_id'];
+    parentId?: ICategoryDocument['_id'] | null;
 }
 
 

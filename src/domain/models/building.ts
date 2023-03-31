@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {ICategoryDocument} from "./category";
+import { Types } from "mongoose";
 
 
 export enum STATUS {
