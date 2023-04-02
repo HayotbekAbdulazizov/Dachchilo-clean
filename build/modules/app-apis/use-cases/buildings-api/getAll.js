@@ -15,19 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetAllBuildingsUseCase = void 0;
 const inversify_1 = require("inversify");
 const symbols_1 = require("../../../../dependencies/symbols");
+const errorHandler_1 = require("../../../../shared/utils/errorHandler");
 let GetAllBuildingsUseCase = class GetAllBuildingsUseCase {
     constructor(buildingRepository) {
         this.buildingRepository = buildingRepository;
     }
     async execute(query) {
-        try {
-            return await this.buildingRepository.get(query);
-        }
-        catch (err) {
-            throw new Error(err.message);
-        }
+        return await this.buildingRepository.get(query);
     }
 };
+__decorate([
+    errorHandler_1.globalErrorHandler,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], GetAllBuildingsUseCase.prototype, "execute", null);
 GetAllBuildingsUseCase = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(symbols_1.symbols.DB.repositories.buildingRepository)),

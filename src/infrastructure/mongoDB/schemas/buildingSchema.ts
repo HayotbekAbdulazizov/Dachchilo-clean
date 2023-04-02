@@ -47,6 +47,28 @@ export const BuildingSchema = new mongoose.Schema({
           default: "SHORT"
         },
 
+        comments: [{
+            type: mongoose.Types.ObjectId,
+            ref: "Comment"
+        }],
+
+        // saveds: [{
+        //     type: mongoose.Types.ObjectId,
+        //     ref: "Favourite"
+        // }],
+
+        commentsCount: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+
+        // savedsCount: {
+        //     type: Number,
+        //     required: true,
+        //     default: 0
+        // },
+
     },
     {
         timestamps: true

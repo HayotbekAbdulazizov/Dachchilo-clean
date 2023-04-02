@@ -3,6 +3,7 @@ import {symbols} from "../../../../dependencies/symbols";
 import { ICommentDocument } from "../../../../domain/models/CommentModel";
 import { ICommentRepository } from "../../../../domain/interfaces/repositories/CommentRepository";
 import {FilterQuery, ObjectId, QueryOptions} from "mongoose";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IUpdateManyCommentsUseCase {
@@ -19,12 +20,9 @@ export class UpdateManyCommentsUseCase implements IUpdateManyCommentsUseCase{
     ) {}
 
 
+    @globalErrorHandler
     async execute(query: FilterQuery<ICommentDocument>, data: ICommentDocument[], options: QueryOptions): Promise<ICommentDocument[] | null>{
-        try{
-            return await this.commentRepository.update(query, data, options)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.commentRepository.update(query, data, options)
     }
 
 

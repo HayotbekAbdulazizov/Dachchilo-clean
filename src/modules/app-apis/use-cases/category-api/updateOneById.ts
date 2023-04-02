@@ -3,6 +3,7 @@ import {inject, injectable} from "inversify";
 import {ICategoryRepository} from "../../../../domain/interfaces/repositories/CategoryRepository";
 import {symbols} from "../../../../dependencies/symbols";
 import {ObjectId, QueryOptions} from "mongoose";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IUpdateOneCategoryByIdUseCase {
@@ -20,12 +21,9 @@ export class UpdateOneCategoryByIdUseCase implements IUpdateOneCategoryByIdUseCa
     ) {}
 
 
+    @globalErrorHandler
     async execute(id: string | ObjectId, data: ICategoryInput, options: QueryOptions = {}): Promise<ICategoryDocument | null> {
-        try{
-            return await this.categoryRepository.updateOne({_id: id} , data, options)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.categoryRepository.updateOne({_id: id} , data, options)
     }
 
 

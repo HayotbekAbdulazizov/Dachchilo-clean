@@ -3,6 +3,7 @@ import {inject, injectable} from "inversify";
 import {ICategoryRepository} from "../../../../domain/interfaces/repositories/CategoryRepository";
 import {symbols} from "../../../../dependencies/symbols";
 import {FilterQuery} from "mongoose";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IGetAllCategoriesUseCase {
@@ -20,12 +21,9 @@ export class GetAllCategoriesUseCase implements IGetAllCategoriesUseCase{
     ) {}
 
 
+    @globalErrorHandler
     async execute(query: FilterQuery<ICategoryDocument> = {}): Promise<ICategoryDocument[]> {
-        try{
-            return await this.categoryRepository.get(query)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.categoryRepository.get(query)
     }
 
 

@@ -16,60 +16,66 @@ exports.BuildingRepository = void 0;
 const driver_1 = require("../driver");
 const inversify_1 = require("inversify");
 const symbols_1 = require("../../../dependencies/symbols");
+const errorHandler_1 = require("../../../shared/utils/errorHandler");
 let BuildingRepository = class BuildingRepository {
     constructor(db) {
         this.db = db;
         this.model = this.db.buildingModel;
     }
     async get(filter, options = {}) {
-        try {
-            return await this.model.find(filter, options);
-        }
-        catch (err) {
-            throw new Error(err.message);
-        }
+        return await this.model.find(filter, options);
     }
     async create(data) {
-        try {
-            return await this.model.create(data);
-        }
-        catch (err) {
-            throw new Error(err.message);
-        }
+        return await this.model.create(data);
     }
     async getOne(query, options = {}) {
-        try {
-            const building = await this.model.findOne(query, options);
-            if (!building) {
-                throw new Error("Buildding was not found");
-            }
-            return building;
+        const building = await this.model.findOne(query, options);
+        if (!building) {
+            throw new Error("Buildding was not found");
         }
-        catch (err) {
-            throw new Error(err.message);
-        }
+        return building;
     }
     async updateOne(query, data, options = {}) {
-        try {
-            const building = await this.model.findOneAndUpdate(query, data, options);
-            if (!building) {
-                throw new Error("Building was not found ");
-            }
-            return building;
+        const building = await this.model.findOneAndUpdate(query, data, options);
+        if (!building) {
+            throw new Error("Building was not found ");
         }
-        catch (err) {
-            throw new Error(err.message);
-        }
+        return building;
     }
     async deleteOne(query, options = {}) {
-        try {
-            return await this.model.findOneAndDelete(query, options);
-        }
-        catch (err) {
-            throw new Error(err.message);
-        }
+        return this.model.findOneAndDelete(query, options);
     }
 };
+__decorate([
+    errorHandler_1.globalErrorHandler,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingRepository.prototype, "get", null);
+__decorate([
+    errorHandler_1.globalErrorHandler,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], BuildingRepository.prototype, "create", null);
+__decorate([
+    errorHandler_1.globalErrorHandler,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingRepository.prototype, "getOne", null);
+__decorate([
+    errorHandler_1.globalErrorHandler,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingRepository.prototype, "updateOne", null);
+__decorate([
+    errorHandler_1.globalErrorHandler,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingRepository.prototype, "deleteOne", null);
 BuildingRepository = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(symbols_1.symbols.DB.driver)),

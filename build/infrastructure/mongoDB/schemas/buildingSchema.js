@@ -41,6 +41,24 @@ exports.BuildingSchema = new mongoose_1.default.Schema({
         enum: BuildingModel_1.TERM,
         default: "SHORT"
     },
+    comments: [{
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "Comment"
+        }],
+    // saveds: [{
+    //     type: mongoose.Types.ObjectId,
+    //     ref: "Favourite"
+    // }],
+    commentsCount: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    // savedsCount: {
+    //     type: Number,
+    //     required: true,
+    //     default: 0
+    // },
 }, {
     timestamps: true
 });

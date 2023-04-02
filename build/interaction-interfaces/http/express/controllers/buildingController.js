@@ -16,6 +16,7 @@ exports.BuildingController = void 0;
 const inversify_1 = require("inversify");
 require("reflect-metadata");
 const symbols_1 = require("../../../../dependencies/symbols");
+const errorHandler_1 = require("../../../../shared/utils/errorHandler");
 let BuildingController = class BuildingController {
     constructor(getAllBuildingsUseCase, createBuildingUseCase, getBuildingByIdUseCase, updateBuildingByIdUseCase, deleteBuildingByIdUseCase) {
         this.getAllBuildingsUseCase = getAllBuildingsUseCase;
@@ -25,59 +26,61 @@ let BuildingController = class BuildingController {
         this.deleteBuildingByIdUseCase = deleteBuildingByIdUseCase;
     }
     async getAll(_req, res) {
-        try {
-            const responseData = await this.getAllBuildingsUseCase.execute({});
-            return res.json(responseData);
-        }
-        catch (err) {
-            return res.status(403).send(err.message);
-        }
+        const responseData = await this.getAllBuildingsUseCase.execute({});
+        return res.json(responseData);
     }
     async create(req, res) {
-        try {
-            const data = req.body;
-            const building = await this.createBuildingUseCase.execute(data);
-            return res.status(201).send(building);
-        }
-        catch (err) {
-            return res.status(403).send(err.message);
-        }
+        const data = req.body;
+        const building = await this.createBuildingUseCase.execute(data);
+        return res.status(201).send(building);
     }
     async getById(req, res) {
-        try {
-            const id = req.params.id;
-            const building = await this.getBuildingByIdUseCase.execute(id);
-            return res.status(200).send(building);
-        }
-        catch (err) {
-            return res.status(403).send(err.message);
-        }
+        const id = req.params.id;
+        const building = await this.getBuildingByIdUseCase.execute(id);
+        return res.status(200).send(building);
     }
     async updateById(req, res) {
-        console.log("-- Building controller UPDATE -- ");
-        try {
-            const id = req.params.id;
-            const data = req.body;
-            console.log(id, data);
-            const building = await this.updateBuildingByIdUseCase.execute(id, data);
-            console.log("--- Building ", building);
-            return res.status(300).send(building);
-        }
-        catch (err) {
-            return res.status(403).send(err.message);
-        }
+        const id = req.params.id;
+        const data = req.body;
+        const building = await this.updateBuildingByIdUseCase.execute(id, data);
+        return res.status(300).send(building);
     }
     async deleteById(req, res) {
         const id = req.params.id;
-        try {
-            const building = await this.deleteBuildingByIdUseCase.execute(id);
-            return res.status(203).json(building);
-        }
-        catch (err) {
-            return res.status(403).json(err.message);
-        }
+        const building = await this.deleteBuildingByIdUseCase.execute(id);
+        return res.status(203).json(building);
     }
 };
+__decorate([
+    errorHandler_1.errorHandlerController,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingController.prototype, "getAll", null);
+__decorate([
+    errorHandler_1.errorHandlerController,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingController.prototype, "create", null);
+__decorate([
+    errorHandler_1.errorHandlerController,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingController.prototype, "getById", null);
+__decorate([
+    errorHandler_1.errorHandlerController,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingController.prototype, "updateById", null);
+__decorate([
+    errorHandler_1.errorHandlerController,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], BuildingController.prototype, "deleteById", null);
 BuildingController = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(symbols_1.symbols.useCases.building.getAll)),

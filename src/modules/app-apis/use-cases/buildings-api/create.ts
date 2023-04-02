@@ -2,6 +2,7 @@ import {inject, injectable} from "inversify";
 import {IBuildingDocument, IBuildingInput} from "../../../../domain/models/BuildingModel";
 import {symbols} from "../../../../dependencies/symbols";
 import {IBuildingRepository} from "../../../../domain/interfaces/repositories/BuildingRepository";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface ICreateBuildingUseCase {
@@ -17,12 +18,10 @@ export class CreateBuildingUseCase implements ICreateBuildingUseCase{
         private buildingRepository: IBuildingRepository,
     ) {}
 
+
+    @globalErrorHandler
     async execute(data: IBuildingInput): Promise<IBuildingDocument> {
-        try{
-            return await this.buildingRepository.create(data)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.buildingRepository.create(data)
     }
 
 

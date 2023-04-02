@@ -10,6 +10,8 @@ import {ICreateBuildingUseCase} from "../../../../modules/app-apis/use-cases/bui
 import {IGetBuildingByIdUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/getById";
 import { IUpdateBuildingByIdUseCase } from "../../../../modules/app-apis/use-cases/buildings-api/updateById";
 import {IDeleteBuildingByIdUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/deleteById";
+import {errorHandlerController} from "../../../../shared/utils/errorHandler";
+
 
 export interface IBuildingController{
     getAll(req: Request, res: Response): Promise<Response>
@@ -37,67 +39,44 @@ export class BuildingController implements IBuildingController {
     ) {}
 
 
+    @errorHandlerController
     async getAll(_req: Request, res: Response): Promise<Response>{
-
-        try{
-            const responseData = await this.getAllBuildingsUseCase.execute({})
-            return res.json(responseData);
-
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const responseData = await this.getAllBuildingsUseCase.execute({})
+        return res.json(responseData);
     }
 
 
+    @errorHandlerController
     async create(req: Request, res: Response): Promise<Response>{
-        try{
-            const data = req.body
-            const building = await this.createBuildingUseCase.execute(data)
-            return res.status(201).send(building)
-
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const data = req.body
+        const building = await this.createBuildingUseCase.execute(data)
+        return res.status(201).send(building)
     }
 
 
+    @errorHandlerController
     async getById(req: Request, res: Response): Promise<Response>{
-        try{
-            const id = req.params.id
-            const building = await this.getBuildingByIdUseCase.execute(id)
-            return res.status(200).send(building)
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const id = req.params.id
+        const building = await this.getBuildingByIdUseCase.execute(id)
+        return res.status(200).send(building)
     }
 
 
+    @errorHandlerController
     async updateById(req: Request, res: Response): Promise<Response>{
-        console.log("-- Building controller UPDATE -- ")
-        try{
-            const id = req.params.id
-            const data = req.body
-            console.log(id, data)
-            const building = await this.updateBuildingByIdUseCase.execute(id, data)
-            console.log("--- Building ", building)
-            return res.status(300).send(building)
+        const id = req.params.id
+        const data = req.body
+        const building = await this.updateBuildingByIdUseCase.execute(id, data)
+        return res.status(300).send(building)
 
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
     }
 
 
-
+    @errorHandlerController
     async deleteById(req: Request, res: Response): Promise<Response>{
         const id = req.params.id
-
-        try{
-            const building = await this.deleteBuildingByIdUseCase.execute(id)
-            return res.status(203).json(building)
-        }catch (err: any){
-            return res.status(403).json(err.message)
-        }
+        const building = await this.deleteBuildingByIdUseCase.execute(id)
+        return res.status(203).json(building)
     }
 
 

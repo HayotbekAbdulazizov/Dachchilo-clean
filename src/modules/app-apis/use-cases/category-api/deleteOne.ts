@@ -3,6 +3,7 @@ import {inject, injectable} from "inversify";
 import {ICategoryRepository} from "../../../../domain/interfaces/repositories/CategoryRepository";
 import {symbols} from "../../../../dependencies/symbols";
 import { ObjectId, QueryOptions} from "mongoose";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IDeleteOneCategoryByIdUseCase {
@@ -20,12 +21,9 @@ export class DeleteOneCategoryByIdUseCase implements IDeleteOneCategoryByIdUseCa
     ) {}
 
 
+    @globalErrorHandler
     async execute(id: string | ObjectId, options: QueryOptions = {}): Promise<ICategoryDocument | null> {
-        try{
-            return await this.categoryRepository.deleteOne({_id: id}, options)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.categoryRepository.deleteOne({_id: id}, options)
     }
 
 

@@ -7,6 +7,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import {ICategoryController} from "./controllers/categoryController";
 import {ICommentController} from "./controllers/commentController";
+import {errorHandlerController} from "../../../shared/utils/errorHandler";
 
 
 

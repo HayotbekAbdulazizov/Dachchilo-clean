@@ -2,6 +2,7 @@ import {inject, injectable} from "inversify";
 import {symbols} from "../../../../dependencies/symbols";
 import {ICommentDocument, ICommentInput} from "../../../../domain/models/CommentModel";
 import {ICommentRepository} from "../../../../domain/interfaces/repositories/CommentRepository";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface ICreateCommentUseCase {
@@ -18,12 +19,9 @@ export class CreateCommentUseCase implements ICreateCommentUseCase{
     ) {}
 
 
+    @globalErrorHandler
     async execute(data: ICommentInput): Promise<ICommentDocument> {
-        try{
-            return await this.commentRepository.create(data)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.commentRepository.create(data)
     }
 
 

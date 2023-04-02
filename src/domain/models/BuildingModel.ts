@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import {ICategoryDocument} from "./CategoryModel";
 import { Types } from "mongoose";
+import {ICommentDocument} from "./CommentModel";
 
 
 export enum STATUS {
@@ -30,5 +31,9 @@ export interface IBuildingDocument extends IBuildingInput, mongoose.Document{
     status?: STATUS,
     createdAt: Date;
     updatedAt: Date;
+    comments: ICommentDocument['_id'][]
+    // saveds: FavouriteDocument['_id'][],
+    commentsCount: number,
+    // savedsCount: number,
 }
 

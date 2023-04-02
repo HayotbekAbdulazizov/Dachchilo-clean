@@ -2,6 +2,7 @@ import {ICategoryDocument, ICategoryInput} from "../../../../domain/models/Categ
 import {inject, injectable} from "inversify";
 import {ICategoryRepository} from "../../../../domain/interfaces/repositories/CategoryRepository";
 import {symbols} from "../../../../dependencies/symbols";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface ICreateCategoryUseCase {
@@ -19,12 +20,9 @@ export class CreateCategoryUseCase implements ICreateCategoryUseCase{
     ) {}
 
 
+    @globalErrorHandler
     async execute(data: ICategoryInput): Promise<ICategoryDocument> {
-        try{
-            return await this.categoryRepository.create(data)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.categoryRepository.create(data)
     }
 
 

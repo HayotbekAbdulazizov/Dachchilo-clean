@@ -3,6 +3,7 @@ import {symbols} from "../../../../dependencies/symbols";
 import {ICommentDocument, ICommentInput} from "../../../../domain/models/CommentModel";
 import {ICommentRepository} from "../../../../domain/interfaces/repositories/CommentRepository";
 import {ObjectId} from "mongoose";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IDeleteCommentByIdUseCase {
@@ -19,12 +20,9 @@ export class DeleteCommentByIdUseCase implements IDeleteCommentByIdUseCase{
     ) {}
 
 
+    @globalErrorHandler
     async execute(id: string | ObjectId): Promise<ICommentDocument | null> {
-        try{
-            return await this.commentRepository.deleteOne({_id: id})
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.commentRepository.deleteOne({_id: id})
     }
 
 

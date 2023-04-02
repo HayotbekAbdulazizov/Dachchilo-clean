@@ -9,7 +9,7 @@ export function errorHandlerController(_target: any, _key: string, descriptor: P
             return result;
         } catch (err: any) {
             console.log(err.message)
-            return res.status(403).json(err.message)
+            return res.status(403).json("Something went wrong")
             // next(err);
         }
     };

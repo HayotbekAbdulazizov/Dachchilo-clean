@@ -3,6 +3,7 @@ import {ObjectId} from "mongoose";
 import {IBuildingDocument, IBuildingInput} from "../../../../domain/models/BuildingModel";
 import {IBuildingRepository} from "../../../../domain/interfaces/repositories/BuildingRepository";
 import {symbols} from "../../../../dependencies/symbols";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IUpdateBuildingByIdUseCase{
@@ -17,14 +18,10 @@ export class UpdateBuildingByIdUseCase implements IUpdateBuildingByIdUseCase{
         private buildingRepository: IBuildingRepository
     ) {}
 
-
+    @globalErrorHandler
     async execute(id: string | ObjectId, data: IBuildingInput): Promise<IBuildingDocument | null> {
-        try{
-            const building = await this.buildingRepository.updateOne({_id: id}, data, { new: true });
-            return building;
-        }catch (err: any){
-            throw new Error(err.message)
-        }
+        const building = await this.buildingRepository.updateOne({_id: id}, data, { new: true });
+        return building;
     }
 
 }

@@ -3,6 +3,7 @@ import {inject, injectable} from "inversify";
 import {ICategoryRepository} from "../../../../domain/interfaces/repositories/CategoryRepository";
 import {symbols} from "../../../../dependencies/symbols";
 import {ObjectId} from "mongoose";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IGetOneCategoryByIdUseCase {
@@ -20,12 +21,9 @@ export class GetOneCategoryByIdUseCase implements IGetOneCategoryByIdUseCase{
     ) {}
 
 
+    @globalErrorHandler
     async execute(id: string | ObjectId): Promise<ICategoryDocument | null> {
-        try{
-            return await this.categoryRepository.getOne({_id: id})
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.categoryRepository.getOne({_id: id})
     }
 
 

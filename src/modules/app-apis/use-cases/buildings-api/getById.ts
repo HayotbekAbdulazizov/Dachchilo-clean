@@ -3,6 +3,7 @@ import {symbols} from "../../../../dependencies/symbols";
 import {IBuildingRepository} from "../../../../domain/interfaces/repositories/BuildingRepository";
 import {ObjectId} from "mongoose"
 import {IBuildingDocument} from "../../../../domain/models/BuildingModel";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 export interface IGetBuildingByIdUseCase{
     execute(id: string | ObjectId): Promise<IBuildingDocument>
@@ -16,12 +17,11 @@ export class GetBuildingByIdUseCase implements IGetBuildingByIdUseCase{
         private buildingRepository: IBuildingRepository
     ) {}
 
+
+    @globalErrorHandler
     async execute(id: string | ObjectId): Promise<IBuildingDocument> {
-        try{
-            const building = await this.buildingRepository.getOne({_id:id})
-            return building;
-        }catch (err: any){
-            throw new Error(err.message)
-        }
+        const building = await this.buildingRepository.getOne({_id:id})
+        return building;
     }
+
 }

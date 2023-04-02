@@ -3,6 +3,7 @@ import {symbols} from "../../../../dependencies/symbols";
 import {ICommentDocument, ICommentInput} from "../../../../domain/models/CommentModel";
 import { ICommentRepository } from "../../../../domain/interfaces/repositories/CommentRepository";
 import { ObjectId, QueryOptions} from "mongoose";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IUpdateOneCommentByIdUseCase {
@@ -19,12 +20,9 @@ export class UpdateOneCommentByIdUseCase implements IUpdateOneCommentByIdUseCase
     ) {}
 
 
+    @globalErrorHandler
     async execute(id: string | ObjectId, data: ICommentInput, options: QueryOptions = {}): Promise<ICommentDocument | null>{
-        try{
-            return await this.commentRepository.updateOne({_id: id}, data, options)
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        return await this.commentRepository.updateOne({_id: id}, data, options)
     }
 
 

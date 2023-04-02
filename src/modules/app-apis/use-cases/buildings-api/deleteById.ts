@@ -3,6 +3,7 @@ import {IBuildingDocument} from "../../../../domain/models/BuildingModel";
 import {inject, injectable} from "inversify";
 import {IBuildingRepository} from "../../../../domain/interfaces/repositories/BuildingRepository";
 import {symbols} from "../../../../dependencies/symbols";
+import {globalErrorHandler} from "../../../../shared/utils/errorHandler";
 
 
 export interface IDeleteBuildingByIdUseCase {
@@ -19,13 +20,11 @@ export class DeleteBuildingByIdUseCase implements IDeleteBuildingByIdUseCase{
         private buildingRepository: IBuildingRepository
     ) {}
 
+
+    @globalErrorHandler
     async execute(id: string | ObjectId): Promise<IBuildingDocument | null> {
-        try{
-            const building = await this.buildingRepository.deleteOne({_id: id})
-            return building;
-        }catch (err: any) {
-            throw new Error(err.message)
-        }
+        const building = await this.buildingRepository.deleteOne({_id: id})
+        return building;
     }
 
 
