@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
 import {ObjectId} from "mongoose";
-import {IBuildingDocument, IBuildingInput} from "../../../../domain/models/building";
+import {IBuildingDocument, IBuildingInput} from "../../../../domain/models/BuildingModel";
 import {IBuildingRepository} from "../../../../domain/interfaces/repositories/BuildingRepository";
 import {symbols} from "../../../../dependencies/symbols";
 

@@ -19,22 +19,26 @@ import {
 import {CreateCategoryUseCase, ICreateCategoryUseCase} from "../../../modules/app-apis/use-cases/category-api/create";
 import {GetAllCategoriesUseCase, IGetAllCategoriesUseCase} from "../../../modules/app-apis/use-cases/category-api/getAll";
 import {
-    DeleteOneCategoryUseCase,
-    IDeleteOneCategoryUseCase
-} from "../../../modules/app-apis/use-cases/category-api/deleteOne";
-import {
-    GetOneByIdCategoryUseCase,
-    IGetOneByIdCategoryUseCase
-} from "../../../modules/app-apis/use-cases/category-api/getOneById";
-import {
     IUpdateOneCategoryByIdUseCase,
     UpdateOneCategoryByIdUseCase
 } from "../../../modules/app-apis/use-cases/category-api/updateOneById";
-
-
-
-
-
+import {CreateCommentUseCase, ICreateCommentUseCase} from "../../../modules/app-apis/use-cases/comment-api/create";
+import {
+    DeleteCommentByBuildingUseCase,
+    IDeleteCommentByBuildingUseCase
+} from "../../../modules/app-apis/use-cases/comment-api/deleteByBuilding";
+import {
+    DeleteCommentByIdUseCase,
+    IDeleteCommentByIdUseCase
+} from "../../../modules/app-apis/use-cases/comment-api/deleteOneById";
+import {
+    GetCommentsByBuildingUseCase,
+    IGetCommentsByBuildingUseCase
+} from "../../../modules/app-apis/use-cases/comment-api/getByBuilding";
+import { DeleteOneCategoryByIdUseCase, IDeleteOneCategoryByIdUseCase } from "../../../modules/app-apis/use-cases/category-api/deleteOne";
+import { IGetOneCategoryByIdUseCase, GetOneCategoryByIdUseCase } from "../../../modules/app-apis/use-cases/category-api/getOneById";
+import {UpdateOneCommentByIdUseCase, IUpdateOneCommentByIdUseCase} from "../../../modules/app-apis/use-cases/comment-api/updateOneById";
+import {GetCommentByIdUseCase, IGetCommentByIdUseCase} from "../../../modules/app-apis/use-cases/comment-api/getOne";
 
 export const UseCasesModule = new ContainerModule((bind: interfaces.Bind) => {
     bind<IGetAllBuildingsUseCase>(symbols.useCases.building.getAll).to(GetAllBuildingsUseCase)
@@ -46,8 +50,18 @@ export const UseCasesModule = new ContainerModule((bind: interfaces.Bind) => {
 
     bind<ICreateCategoryUseCase>(symbols.useCases.category.create).to(CreateCategoryUseCase)
     bind<IGetAllCategoriesUseCase>(symbols.useCases.category.getAll).to(GetAllCategoriesUseCase)
-    bind<IDeleteOneCategoryUseCase>(symbols.useCases.category.deleteOneById).to(DeleteOneCategoryUseCase)
-    bind<IGetOneByIdCategoryUseCase>(symbols.useCases.category.getOneById).to(GetOneByIdCategoryUseCase)
+    bind<IDeleteOneCategoryByIdUseCase>(symbols.useCases.category.deleteOneById).to(DeleteOneCategoryByIdUseCase)
+    bind<IGetOneCategoryByIdUseCase>(symbols.useCases.category.getOneById).to(GetOneCategoryByIdUseCase)
     bind<IUpdateOneCategoryByIdUseCase>(symbols.useCases.category.updateOneById).to(UpdateOneCategoryByIdUseCase)
+
+
+    bind<ICreateCommentUseCase>(symbols.useCases.comment.create).to(CreateCommentUseCase)
+    bind<IDeleteCommentByBuildingUseCase>(symbols.useCases.comment.deleteByBuilding).to(DeleteCommentByBuildingUseCase)
+    bind<IDeleteCommentByIdUseCase>(symbols.useCases.comment.deleteOneById).to(DeleteCommentByIdUseCase)
+    bind<IGetCommentsByBuildingUseCase>(symbols.useCases.comment.getByBuilding).to(GetCommentsByBuildingUseCase)
+    bind<IUpdateOneCommentByIdUseCase>(symbols.useCases.comment.updateOneById).to(UpdateOneCommentByIdUseCase)
+    bind<IGetCommentByIdUseCase>(symbols.useCases.comment.getById).to(GetCommentByIdUseCase)
+
+
 
 })

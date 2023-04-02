@@ -1,5 +1,5 @@
 import {inject, injectable} from "inversify";
-import {ICategoryDocument, ICategoryInput} from "../../../domain/models/category";
+import {ICategoryDocument, ICategoryInput} from "../../../domain/models/CategoryModel";
 import {FilterQuery, Model, QueryOptions} from "mongoose";
 import {ICategoryRepository} from "../../../domain/interfaces/repositories/CategoryRepository";
 import {IMongoDriver} from "../driver";

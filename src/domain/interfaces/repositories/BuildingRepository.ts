@@ -1,5 +1,5 @@
 import {Expression, FilterQuery, QueryOptions, UpdateQuery} from "mongoose";
-import {IBuildingDocument, IBuildingInput} from "../../models/building";
+import {IBuildingDocument, IBuildingInput} from "../../models/BuildingModel";
 
 
 export interface IBuildingRepository {

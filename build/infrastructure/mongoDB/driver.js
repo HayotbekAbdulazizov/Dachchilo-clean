@@ -8,9 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDriver = void 0;
 const buildingSchema_1 = require("./schemas/buildingSchema");
+const categorySchema_1 = require("./schemas/categorySchema");
+const commentSchema_1 = require("./schemas/commentSchema");
 const mongoose_1 = require("mongoose");
 const inversify_1 = require("inversify");
-const categorySchema_1 = require("./schemas/categorySchema");
 require("reflect-metadata");
 let MongoDriver = class MongoDriver {
     async init() {
@@ -25,6 +26,7 @@ let MongoDriver = class MongoDriver {
     createModels() {
         this.buildingModel = this.db.model('Building', buildingSchema_1.BuildingSchema);
         this.categoryModel = this.db.model('Category', categorySchema_1.CategorySchema);
+        this.commentModel = this.db.model('Comment', commentSchema_1.CommentSchema);
         console.log(' - Db models are created - ');
     }
 };

@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BuildingSchema = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const building_1 = require("../../../domain/models/building");
+const BuildingModel_1 = require("../../../domain/models/BuildingModel");
 const slugify_1 = __importDefault(require("slugify"));
 exports.BuildingSchema = new mongoose_1.default.Schema({
     category: {
@@ -14,8 +14,8 @@ exports.BuildingSchema = new mongoose_1.default.Schema({
     },
     status: {
         type: String,
-        enum: building_1.STATUS,
-        default: building_1.STATUS.FREE
+        enum: BuildingModel_1.STATUS,
+        default: BuildingModel_1.STATUS.FREE
     },
     title: {
         type: String,
@@ -38,7 +38,7 @@ exports.BuildingSchema = new mongoose_1.default.Schema({
     },
     type: {
         type: String,
-        enum: building_1.TERM,
+        enum: BuildingModel_1.TERM,
         default: "SHORT"
     },
 }, {

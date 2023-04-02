@@ -1,5 +1,5 @@
 import {IBuildingRepository} from "../../../domain/interfaces/repositories/BuildingRepository";
-import {IBuildingDocument, IBuildingInput} from "../../../domain/models/building";
+import {IBuildingDocument, IBuildingInput} from "../../../domain/models/BuildingModel";
 import {FilterQuery, Model, QueryOptions} from "mongoose";
 import {MongoDriver} from "../driver";
 import {inject, injectable} from "inversify";
@@ -21,7 +21,7 @@ export class BuildingRepository implements IBuildingRepository {
 
     async get(filter: FilterQuery<IBuildingDocument>, options: QueryOptions = {}): Promise<IBuildingDocument[]> {
         try{
-            return this.model.find(filter, options);
+            return await this.model.find(filter, options);
         }catch (err: any){
             throw new Error(err.message)
         }

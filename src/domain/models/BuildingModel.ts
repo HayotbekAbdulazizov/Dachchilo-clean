@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {ICategoryDocument} from "./category";
+import {ICategoryDocument} from "./CategoryModel";
 import { Types } from "mongoose";
 
 

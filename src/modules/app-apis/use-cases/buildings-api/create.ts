@@ -1,5 +1,5 @@
 import {inject, injectable} from "inversify";
-import {IBuildingDocument, IBuildingInput} from "../../../../domain/models/building";
+import {IBuildingDocument, IBuildingInput} from "../../../../domain/models/BuildingModel";
 import {symbols} from "../../../../dependencies/symbols";
 import {IBuildingRepository} from "../../../../domain/interfaces/repositories/BuildingRepository";
 

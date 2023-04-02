@@ -23,7 +23,7 @@ let BuildingRepository = class BuildingRepository {
     }
     async get(filter, options = {}) {
         try {
-            return this.model.find(filter, options);
+            return await this.model.find(filter, options);
         }
         catch (err) {
             throw new Error(err.message);

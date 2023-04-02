@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { CATEGORY_TYPE } from "../../../domain/models/category";
+import { CATEGORY_TYPE } from "../../../domain/models/CategoryModel";
 import slugify  from "slugify";
 
 

@@ -1,6 +1,6 @@
-import {ICategoryDocument, ICategoryInput} from "../../models/category";
+import {ICategoryDocument, ICategoryInput} from "../../models/CategoryModel";
 import {FilterQuery, QueryOptions} from "mongoose";
-import {IBuildingDocument} from "../../models/building";
+import {IBuildingDocument} from "../../models/BuildingModel";
 import {inject} from "inversify";
 
 

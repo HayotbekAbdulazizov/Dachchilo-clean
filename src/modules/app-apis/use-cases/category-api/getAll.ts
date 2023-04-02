@@ -1,4 +1,4 @@
-import {ICategoryDocument} from "../../../../domain/models/category";
+import {ICategoryDocument} from "../../../../domain/models/CategoryModel";
 import {inject, injectable} from "inversify";
 import {ICategoryRepository} from "../../../../domain/interfaces/repositories/CategoryRepository";
 import {symbols} from "../../../../dependencies/symbols";

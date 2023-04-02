@@ -2,7 +2,7 @@ import {inject, injectable} from "inversify";
 import {symbols} from "../../../../dependencies/symbols";
 import {IBuildingRepository} from "../../../../domain/interfaces/repositories/BuildingRepository";
 import {ObjectId} from "mongoose"
-import {IBuildingDocument} from "../../../../domain/models/building";
+import {IBuildingDocument} from "../../../../domain/models/BuildingModel";
 
 export interface IGetBuildingByIdUseCase{
     execute(id: string | ObjectId): Promise<IBuildingDocument>

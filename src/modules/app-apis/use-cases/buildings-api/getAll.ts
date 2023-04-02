@@ -1,4 +1,4 @@
-import {IBuildingDocument} from "../../../../domain/models/building";
+import {IBuildingDocument} from "../../../../domain/models/BuildingModel";
 import { FilterQuery } from "mongoose"
 import { IBuildingRepository } from "../../../../domain/interfaces/repositories/BuildingRepository";
 import {inject, injectable} from "inversify";

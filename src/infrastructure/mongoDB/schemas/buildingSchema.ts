@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { STATUS, TERM } from "../../../domain/models/building";
+import { STATUS, TERM } from "../../../domain/models/BuildingModel";
 import slugify from "slugify"
 
 

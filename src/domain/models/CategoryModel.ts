@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {IBuildingDocument} from "./building";
+import {IBuildingDocument} from "./BuildingModel";
 
 
 export enum CATEGORY_TYPE {

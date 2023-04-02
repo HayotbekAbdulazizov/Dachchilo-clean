@@ -2,7 +2,11 @@ export const symbols = {
      controllers: {
          buildingController: Symbol.for('BuildingController'),
          categoryController: Symbol.for('CategoryController'),
+         commentController: Symbol.for('CommentController'),
      },
+
+
+
 
     useCases: {
          building: {
@@ -20,14 +24,28 @@ export const symbols = {
              getOneById: Symbol.for('getOneCategoryByIdUseCase'),
              updateOneById: Symbol.for('updateOneCategoryByIdUseCase'),
              deleteOneById: Symbol.for('deleteOneCategoryByIdUseCase'),
+        },
+
+        comment: {
+             create: Symbol.for('createCommentUseCase'),
+             updateOneById: Symbol.for('updateOneCommentByIdUseCase'),
+             deleteOneById: Symbol.for('deleteOneCommentByIdUseCase'),
+             deleteByBuilding: Symbol.for('deleteCommentsByBuildingUseCase'),
+             getByBuilding: Symbol.for('getCommentByBuildingUseCase'),
+             getById: Symbol.for('getCommentByIdUseCase')
         }
     },
+
+
+
+
 
     DB: {
         driver: Symbol.for('MongoDriver'),
         repositories: {
             buildingRepository: Symbol.for('BuildingRepository'),
             categoryRepository: Symbol.for('CategoryRepository'),
+            commentRepository: Symbol.for('CommentRepository'),
         }
     },
 
