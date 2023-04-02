@@ -17,39 +17,41 @@ const driver_1 = require("../driver");
 const inversify_1 = require("inversify");
 const symbols_1 = require("../../../dependencies/symbols");
 const errorHandler_1 = require("../../../shared/utils/errorHandler");
-let BuildingRepository = class BuildingRepository {
+const BaseRepository_1 = require("./BaseRepository");
+let BuildingRepository = class BuildingRepository extends BaseRepository_1.BaseRepository {
     constructor(db) {
+        super();
         this.db = db;
-        this.model = this.db.buildingModel;
+        super.init(this.db.buildingModel);
     }
-    async get(filter, options = {}) {
-        return await this.model.find(filter, options);
+    async get(query) {
+        return await super.get(query);
     }
     async create(data) {
-        return await this.model.create(data);
+        return await super.create(data);
     }
-    async getOne(query, options = {}) {
-        const building = await this.model.findOne(query, options);
+    async getOne(query) {
+        const building = await super.getOne(query);
         if (!building) {
             throw new Error("Buildding was not found");
         }
         return building;
     }
     async updateOne(query, data, options = {}) {
-        const building = await this.model.findOneAndUpdate(query, data, options);
+        const building = await super.updateOne(query, data, options);
         if (!building) {
             throw new Error("Building was not found ");
         }
         return building;
     }
     async deleteOne(query, options = {}) {
-        return this.model.findOneAndDelete(query, options);
+        return super.deleteOne(query, options);
     }
 };
 __decorate([
     errorHandler_1.globalErrorHandler,
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], BuildingRepository.prototype, "get", null);
 __decorate([
@@ -61,7 +63,7 @@ __decorate([
 __decorate([
     errorHandler_1.globalErrorHandler,
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], BuildingRepository.prototype, "getOne", null);
 __decorate([

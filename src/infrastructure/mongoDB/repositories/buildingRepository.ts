@@ -1,39 +1,39 @@
 import {IBuildingRepository} from "../../../domain/interfaces/repositories/BuildingRepository";
 import {IBuildingDocument, IBuildingInput} from "../../../domain/models/BuildingModel";
-import {FilterQuery, Model, QueryOptions} from "mongoose";
+import {FilterQuery, QueryOptions} from "mongoose";
 import {MongoDriver} from "../driver";
 import {inject, injectable} from "inversify";
 import {symbols} from "../../../dependencies/symbols";
 import { globalErrorHandler } from "../../../shared/utils/errorHandler";
+import {BaseRepository} from "./BaseRepository";
 
 
 @injectable()
-export class BuildingRepository implements IBuildingRepository {
-    private model!: Model<IBuildingDocument>;
-
+export class BuildingRepository extends BaseRepository<IBuildingDocument, IBuildingInput> implements IBuildingRepository {
 
     constructor(
         @inject<MongoDriver>(symbols.DB.driver) private db: MongoDriver
     ) {
-        this.model = this.db.buildingModel
+        super()
+        super.init(this.db.buildingModel)
     }
 
 
     @globalErrorHandler
-    async get(filter: FilterQuery<IBuildingDocument>, options: QueryOptions = {}): Promise<IBuildingDocument[]> {
-        return await this.model.find(filter, options);
+    async get(query: FilterQuery<IBuildingDocument>): Promise<IBuildingDocument[]> {
+        return await super.get(query)
     }
 
 
     @globalErrorHandler
     async create(data: IBuildingInput): Promise<IBuildingDocument>{
-        return await this.model.create(data);
+        return await super.create(data);
     }
 
 
     @globalErrorHandler
-    async getOne(query: FilterQuery<IBuildingDocument>, options: QueryOptions = {}): Promise<IBuildingDocument>{
-        const building = await this.model.findOne(query, options)
+    async getOne(query: FilterQuery<IBuildingDocument>): Promise<IBuildingDocument>{
+        const building = await super.getOne(query)
         if (!building){
             throw new Error("Buildding was not found")
         }
@@ -44,7 +44,7 @@ export class BuildingRepository implements IBuildingRepository {
 
     @globalErrorHandler
     async updateOne(query: FilterQuery<IBuildingDocument>, data: IBuildingInput, options: QueryOptions = {}): Promise<IBuildingDocument | null>{
-        const building  = await this.model.findOneAndUpdate(query, data, options)
+        const building  = await super.updateOne(query, data, options)
         if (!building) {
             throw new Error("Building was not found ")
         }
@@ -54,7 +54,7 @@ export class BuildingRepository implements IBuildingRepository {
 
     @globalErrorHandler
     async deleteOne(query: FilterQuery<IBuildingDocument>, options: QueryOptions = {}): Promise<IBuildingDocument | null>{
-        return this.model.findOneAndDelete(query, options);
+        return super.deleteOne(query, options);
     }
 
 

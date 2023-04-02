@@ -1,31 +1,11 @@
-import { Model } from 'mongoose';
+import {FilterQuery, Model, QueryOptions, UpdateQuery} from "mongoose";
 
-export class BaseRepository<T extends Document> {
-    constructor(private readonly model: Model<T>) {}
 
-    public async getAll(): Promise<T[]> {
-        return this.model.find().exec();
-    }
-
-    public async getById(id: string): Promise<T | null> {
-        return this.model.findById(id).exec();
-    }
-
-    public async create(data: Partial<T>): Promise<T> {
-        const entity = new this.model(data);
-        return entity.save();
-    }
-
-    public async update(id: string, data: Partial<T>): Promise<T | null> {
-        const entity = await this.model.findById(id).exec();
-        if (!entity) {
-            return null;
-        }
-        Object.assign(entity, data);
-        return entity.save();
-    }
-
-    public async delete(id: string): Promise<void> {
-        await this.model.findByIdAndDelete(id).exec();
-    }
+export interface IBaseRepository<IModel, IInput> {
+    init(model: Model<IModel>): void
+    get(query: QueryOptions<IModel>): Promise<IModel[]>
+    getOne(query: QueryOptions<IModel>): Promise<IModel | null>
+    create(data: IInput): Promise<IModel>
+    updateOne(query: FilterQuery<IModel>, update: UpdateQuery<IModel>, options?: QueryOptions): Promise<IModel | null>
+    deleteOne(query: FilterQuery<IModel>, options?: QueryOptions): Promise<IModel | null>
 }
