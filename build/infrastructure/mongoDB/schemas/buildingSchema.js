@@ -26,7 +26,7 @@ exports.BuildingSchema = new mongoose_1.default.Schema({
         required: true
     },
     image: {
-        type: String,
+        type: Array,
         required: true
     },
     slug: {

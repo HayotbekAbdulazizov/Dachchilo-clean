@@ -52,4 +52,12 @@ export class BaseRepository<IModel, IInput> implements IBaseRepository<IModel, I
         const deletedDocument = await this.model.findOneAndDelete(query, options)
         return deletedDocument
     }
+
+
+
+    @globalErrorHandler
+    public async delete(query: FilterQuery<IModel>, options: QueryOptions): Promise<IModel[] | null>{
+        const documents = await this.model.deleteMany(query, options)
+        return null
+    }
 }

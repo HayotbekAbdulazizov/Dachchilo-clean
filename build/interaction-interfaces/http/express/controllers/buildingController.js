@@ -17,6 +17,8 @@ const inversify_1 = require("inversify");
 require("reflect-metadata");
 const symbols_1 = require("../../../../dependencies/symbols");
 const errorHandler_1 = require("../../../../shared/utils/errorHandler");
+const incomingDataValidator_1 = require("../../../../shared/validators/incomingDataValidator");
+const buildingSchema_1 = require("../validationSchemas/buildingSchema");
 let BuildingController = class BuildingController {
     constructor(getAllBuildingsUseCase, createBuildingUseCase, getBuildingByIdUseCase, updateBuildingByIdUseCase, deleteBuildingByIdUseCase) {
         this.getAllBuildingsUseCase = getAllBuildingsUseCase;
@@ -30,7 +32,11 @@ let BuildingController = class BuildingController {
         return res.json(responseData);
     }
     async create(req, res) {
+        (0, incomingDataValidator_1.dataValidator)(buildingSchema_1.createBuildingSchema, req.body);
+        const images = req.files;
+        console.log(images, "--- Images");
         const data = req.body;
+        data['image'] = images;
         const building = await this.createBuildingUseCase.execute(data);
         return res.status(201).send(building);
     }

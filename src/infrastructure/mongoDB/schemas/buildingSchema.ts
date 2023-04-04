@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { STATUS, TERM } from "../../../domain/models/BuildingModel";
 import slugify from "slugify"
-
+import { IImage } from "../../../domain/models/BuildingModel";
 
 
 export const BuildingSchema = new mongoose.Schema({
@@ -28,7 +28,7 @@ export const BuildingSchema = new mongoose.Schema({
         },
 
         image: {
-            type: String,
+            type: Array,
             required: true
         },
 

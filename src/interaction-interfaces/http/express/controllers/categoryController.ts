@@ -6,6 +6,7 @@ import {IGetOneCategoryByIdUseCase} from "../../../../modules/app-apis/use-cases
 import {IUpdateOneCategoryByIdUseCase} from "../../../../modules/app-apis/use-cases/category-api/updateOneById";
 import {IDeleteOneCategoryByIdUseCase} from "../../../../modules/app-apis/use-cases/category-api/deleteOne";
 import { Response, Request } from "express";
+import {errorHandlerController} from "../../../../shared/utils/errorHandler";
 
 
 export interface ICategoryController{
@@ -36,65 +37,47 @@ export class CategoryController implements ICategoryController {
     ) {}
 
 
+
+    @errorHandlerController
     async getAll(_req: Request, res: Response): Promise<Response>{
-        try{
-            const categories = await this.getAllCategoriesUseCase.execute({})
-            return res.status(200).json(categories)
-
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const categories = await this.getAllCategoriesUseCase.execute({})
+        return res.status(200).json(categories)
     }
 
 
+    @errorHandlerController
     async create(req: Request, res: Response): Promise<Response>{
-        try{
-            const data = req.body
-            const category = await this.createCategoryUseCase.execute(data)
-            return res.status(201).send(category)
-
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const data = req.body
+        const category = await this.createCategoryUseCase.execute(data)
+        return res.status(201).send(category)
     }
 
 
 
+    @errorHandlerController
     async getById(req: Request, res: Response): Promise<Response>{
-        try{
-            const id = req.params.id
-            const category = await this.getOneCategoryByIdUseCase.execute(id)
-            return res.status(200).send(category)
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const id = req.params.id
+        const category = await this.getOneCategoryByIdUseCase.execute(id)
+        return res.status(200).send(category)
     }
 
 
 
+    @errorHandlerController
     async updateById(req: Request, res: Response): Promise<Response>{
-        try{
-            const id = req.params.id
-            const data = req.body
-            const category = await this.updateOneCategoryByIdUseCase.execute(id, data)
-            return res.status(300).send(category)
-
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const id = req.params.id
+        const data = req.body
+        const category = await this.updateOneCategoryByIdUseCase.execute(id, data)
+        return res.status(300).send(category)
     }
 
 
 
+    @errorHandlerController
     async deleteById(req: Request, res: Response): Promise<Response>{
         const id = req.params.id
-
-        try{
-            const category = await this.deleteOneCategoryByIdUseCase.execute(id)
-            return res.status(203).json(category)
-        }catch (err: any){
-            return res.status(403).json(err.message)
-        }
+        const category = await this.deleteOneCategoryByIdUseCase.execute(id)
+        return res.status(203).json(category)
     }
 
 

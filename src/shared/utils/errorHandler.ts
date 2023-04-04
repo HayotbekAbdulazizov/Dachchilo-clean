@@ -32,6 +32,7 @@ export function globalErrorHandler(
         res: Response,
         next: NextFunction
     ) {
+        console.log(`Calling function ${originalMethod.name}`);
         try {
             const result = await originalMethod.call(this, req, res, next);
             return result;

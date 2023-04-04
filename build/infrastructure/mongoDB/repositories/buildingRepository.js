@@ -13,7 +13,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BuildingRepository = void 0;
-const driver_1 = require("../driver");
 const inversify_1 = require("inversify");
 const symbols_1 = require("../../../dependencies/symbols");
 const errorHandler_1 = require("../../../shared/utils/errorHandler");
@@ -81,6 +80,6 @@ __decorate([
 BuildingRepository = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)(symbols_1.symbols.DB.driver)),
-    __metadata("design:paramtypes", [driver_1.MongoDriver])
+    __metadata("design:paramtypes", [Object])
 ], BuildingRepository);
 exports.BuildingRepository = BuildingRepository;

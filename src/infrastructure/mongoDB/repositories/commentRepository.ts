@@ -1,51 +1,49 @@
 import {ICommentRepository} from "../../../domain/interfaces/repositories/CommentRepository";
 
-import {FilterQuery, Model, QueryOptions, UpdateQuery} from "mongoose";
-import {MongoDriver} from "../driver";
+import {FilterQuery, QueryOptions, UpdateQuery} from "mongoose";
+import {IMongoDriver} from "../driver";
 import {inject, injectable} from "inversify";
 import {symbols} from "../../../dependencies/symbols";
 import {ICommentDocument, ICommentInput} from "../../../domain/models/CommentModel";
-import { globalErrorHandler } from "../../../shared/utils/errorHandler";
-
+import {globalErrorHandler} from "../../../shared/utils/errorHandler";
+import {BaseRepository} from "./BaseRepository";
 
 
 @injectable()
-export class CommentRepository implements ICommentRepository {
-    private model!: Model<ICommentDocument>;
-
+export class CommentRepository extends BaseRepository<ICommentDocument, ICommentInput> implements ICommentRepository {
 
     constructor(
-        @inject<MongoDriver>(symbols.DB.driver) private db: MongoDriver
+        @inject<IMongoDriver>(symbols.DB.driver) private db: IMongoDriver
     ) {
-        this.model = this.db.commentModel
+        super()
+        super.init(this.db.commentModel)
     }
 
 
 
     @globalErrorHandler
-    async get(query: FilterQuery<ICommentDocument>, options: QueryOptions = {}): Promise<ICommentDocument[]> {
-        return this.model.find(query, options);
+    async get(query: FilterQuery<ICommentDocument>): Promise<ICommentDocument[]> {
+        return super.get(query);
     }
 
 
     @globalErrorHandler
     async getOne(query: FilterQuery<ICommentDocument>): Promise<ICommentDocument | null>{
-        const comment = await this.model.findOne(query)
-        return comment;
+        return await super.getOne(query);
     }
 
 
 
     @globalErrorHandler
     async create(data:ICommentInput): Promise<ICommentDocument>{
-        return await this.model.create(data);
+        return await super.create(data);
     }
 
 
 
     @globalErrorHandler
     async updateOne(query: FilterQuery<ICommentDocument>, data: UpdateQuery<ICommentDocument>, options: QueryOptions): Promise<ICommentDocument | null>{
-        const comment  = await this.model.findOneAndUpdate(query, data, options)
+        const comment  = await super.updateOne(query, data, options)
         if (!comment) {
             throw new Error("Comment was not found ")
         }
@@ -54,25 +52,30 @@ export class CommentRepository implements ICommentRepository {
 
 
     @globalErrorHandler
-    async deleteOne(query: FilterQuery<ICommentDocument>, options?: QueryOptions): Promise<ICommentDocument | null>{
-        return await this.model.findOneAndDelete(query, options);
+    async deleteOne(query: FilterQuery<ICommentDocument>, options: QueryOptions): Promise<ICommentDocument | null>{
+        return await super.deleteOne(query, options);
     }
-
-
-    @globalErrorHandler
-    async update(query: FilterQuery<ICommentDocument>, data: ICommentInput[] ,options: QueryOptions = {}): Promise<ICommentDocument[] | null>{
-        const comments = await this.model.updateMany(query, data, options)
-        console.log(comments)
-        return null;
-    }
-
 
 
     @globalErrorHandler
     async delete(query: FilterQuery<ICommentDocument>, options: QueryOptions = {}): Promise<ICommentDocument[] | null>{
-        const comments = await this.model.deleteMany(query, options)
+        const comments = await super.delete(query, options)
         return null
     }
+
+
+
+
+
+    // @globalErrorHandler
+    // async update(query: FilterQuery<ICommentDocument>, data: ICommentInput[] ,options: QueryOptions = {}): Promise<ICommentDocument[] | null>{
+    //     const comments = await this.model.updateMany(query, data, options)
+    //     console.log(comments)
+    //     return null;
+    // }
+    //
+    //
+    //
 
 
 }

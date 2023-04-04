@@ -22,6 +22,7 @@ const inversify_1 = require("inversify");
 require("reflect-metadata");
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const multerUpload_1 = require("../../../shared/utils/multerUpload");
 let Server = class Server {
     constructor(buildingController, categoryController, commentController) {
         this.buildingController = buildingController;
@@ -32,6 +33,7 @@ let Server = class Server {
     init() {
         this.app.use((0, cors_1.default)());
         this.app.use(express_1.default.json());
+        this.app.use(multerUpload_1.upload);
         dotenv_1.default.config();
         this.router();
     }

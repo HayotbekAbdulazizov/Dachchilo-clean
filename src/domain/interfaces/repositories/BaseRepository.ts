@@ -8,4 +8,5 @@ export interface IBaseRepository<IModel, IInput> {
     create(data: IInput): Promise<IModel>
     updateOne(query: FilterQuery<IModel>, update: UpdateQuery<IModel>, options?: QueryOptions): Promise<IModel | null>
     deleteOne(query: FilterQuery<IModel>, options?: QueryOptions): Promise<IModel | null>
+    delete(query: FilterQuery<IModel>, options?: QueryOptions): Promise<IModel[] | null>
 }

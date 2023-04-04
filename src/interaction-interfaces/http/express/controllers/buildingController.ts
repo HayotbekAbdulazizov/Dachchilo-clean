@@ -11,6 +11,12 @@ import {IGetBuildingByIdUseCase} from "../../../../modules/app-apis/use-cases/bu
 import { IUpdateBuildingByIdUseCase } from "../../../../modules/app-apis/use-cases/buildings-api/updateById";
 import {IDeleteBuildingByIdUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/deleteById";
 import {errorHandlerController} from "../../../../shared/utils/errorHandler";
+import {dataValidator} from "../../../../shared/validators/incomingDataValidator";
+import { createBuildingSchema } from "../validationSchemas/buildingSchema";
+
+
+
+
 
 
 export interface IBuildingController{
@@ -20,6 +26,8 @@ export interface IBuildingController{
     updateById(req: Request, res: Response): Promise<Response>
     deleteById(req: Request, res: Response): Promise<Response>
 }
+
+
 
 
 
@@ -48,7 +56,12 @@ export class BuildingController implements IBuildingController {
 
     @errorHandlerController
     async create(req: Request, res: Response): Promise<Response>{
+        dataValidator(createBuildingSchema ,req.body)
+
+        const images = req.files as Express.Multer.File[];
+        console.log(images, "--- Images")
         const data = req.body
+        data['image'] = images
         const building = await this.createBuildingUseCase.execute(data)
         return res.status(201).send(building)
     }

@@ -7,7 +7,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import {ICategoryController} from "./controllers/categoryController";
 import {ICommentController} from "./controllers/commentController";
-import {errorHandlerController} from "../../../shared/utils/errorHandler";
+import { upload} from "../../../shared/utils/multerUpload";
 
 
 
@@ -42,6 +42,7 @@ export class Server implements IServer {
     init(): void {
         this.app.use(cors())
         this.app.use(express.json())
+        this.app.use(upload)
         dotenv.config();
         this.router()
     }

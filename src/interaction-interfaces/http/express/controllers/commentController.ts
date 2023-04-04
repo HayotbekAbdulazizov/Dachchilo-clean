@@ -6,21 +6,23 @@ import {ICreateCommentUseCase} from "../../../../modules/app-apis/use-cases/comm
 import {IDeleteCommentByBuildingUseCase} from "../../../../modules/app-apis/use-cases/comment-api/deleteByBuilding";
 import {IDeleteCommentByIdUseCase} from "../../../../modules/app-apis/use-cases/comment-api/deleteOneById";
 import {IGetCommentsByBuildingUseCase} from "../../../../modules/app-apis/use-cases/comment-api/getByBuilding";
-import {IUpdateManyCommentsUseCase} from "../../../../modules/app-apis/use-cases/comment-api/updateMany";
 import {IUpdateOneCommentByIdUseCase} from "../../../../modules/app-apis/use-cases/comment-api/updateOneById";
-import {ICommentDocument} from "../../../../domain/models/CommentModel";
 import {IGetCommentByIdUseCase} from "../../../../modules/app-apis/use-cases/comment-api/getOne";
+import {errorHandlerController} from "../../../../shared/utils/errorHandler";
+
+
 
 
 export interface ICommentController{
     create(req: Request, res: Response): Promise<Response>
-    // update(req: Request, res: Response): Promise<Response>
-    // delete(req: Request, res: Response): Promise<Response>
     updateOne(req: Request, res: Response): Promise<Response>
     deleteOne(req: Request, res: Response): Promise<Response>
     getByBuilding(req: Request, res: Response): Promise<Response>
     deleteByBuilding(req: Request, res: Response): Promise<Response>
     getOne(req: Request, res: Response): Promise<Response>
+
+    // delete(req: Request, res: Response): Promise<Response>
+    // update(req: Request, res: Response): Promise<Response>
 }
 
 
@@ -53,78 +55,54 @@ export class CommentController implements ICommentController {
     ) {}
 
 
+    @errorHandlerController
     async create(req: Request, res: Response): Promise<Response>{
-        try{
-            const data = req.body
-            const comment = await this.createCommentUseCase.execute(data)
-            return res.status(201).send(comment)
-
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const data = req.body
+        const comment = await this.createCommentUseCase.execute(data)
+        return res.status(201).send(comment)
     }
 
 
 
-
+    @errorHandlerController
     async updateOne(req: Request, res: Response): Promise<Response>{
-        try{
-            const id = req.params.id
-            const data = req.body
-            const comment = await this.updateOneCommentById.execute(id, data)
-            return res.status(300).send(comment)
-
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const id = req.params.id
+        const data = req.body
+        const comment = await this.updateOneCommentById.execute(id, data)
+        return res.status(300).send(comment)
     }
 
 
 
-
+    @errorHandlerController
     async deleteOne(req: Request, res: Response): Promise<Response>{
         const id = req.params.id
-
-        try{
-            const comment = await this.deleteCommentByIdUseCase.execute(id)
-            return res.status(203).json(comment)
-        }catch (err: any){
-            return res.status(403).json(err.message)
-        }
+        const comment = await this.deleteCommentByIdUseCase.execute(id)
+        return res.status(203).json(comment)
     }
 
 
     async getByBuilding(req: Request, res: Response): Promise<Response>{
         const buildingId = req.body.buildingId
-        try{
-            const comments = await this.getCommentsByBuildingUseCase.execute(buildingId);
-            return res.status(200).json(comments)
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const comments = await this.getCommentsByBuildingUseCase.execute(buildingId);
+        return res.status(200).json(comments)
     }
 
 
+
+    @errorHandlerController
     async deleteByBuilding(req: Request, res: Response): Promise<Response>{
         const buildingId = req.body.buildingId
-        try{
-            const comments = await this.deleteCommentByBuildingUseCase.execute(buildingId);
-            return res.status(200).json(comments)
-        }catch (err: any) {
-            return res.status(403).send(err.message)
-        }
+        const comments = await this.deleteCommentByBuildingUseCase.execute(buildingId);
+        return res.status(200).json(comments)
     }
 
 
+    @errorHandlerController
     async getOne(req: Request, res: Response): Promise<Response>{
         const id = req.params.id
-        try{
-            const comment = await this.getCommentByIdUseCase.execute(id)
-            console.log(comment, "-- comment");
-            return res.status(200).json(comment)
-        }catch (err: any) {
-            return res.status(404).json(err.message)
-        }
+        const comment = await this.getCommentByIdUseCase.execute(id)
+        return res.status(200).json(comment)
     }
 
 

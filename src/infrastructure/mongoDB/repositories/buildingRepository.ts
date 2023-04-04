@@ -1,7 +1,7 @@
 import {IBuildingRepository} from "../../../domain/interfaces/repositories/BuildingRepository";
 import {IBuildingDocument, IBuildingInput} from "../../../domain/models/BuildingModel";
 import {FilterQuery, QueryOptions} from "mongoose";
-import {MongoDriver} from "../driver";
+import {IMongoDriver, MongoDriver} from "../driver";
 import {inject, injectable} from "inversify";
 import {symbols} from "../../../dependencies/symbols";
 import { globalErrorHandler } from "../../../shared/utils/errorHandler";
@@ -12,7 +12,7 @@ import {BaseRepository} from "./BaseRepository";
 export class BuildingRepository extends BaseRepository<IBuildingDocument, IBuildingInput> implements IBuildingRepository {
 
     constructor(
-        @inject<MongoDriver>(symbols.DB.driver) private db: MongoDriver
+        @inject<IMongoDriver>(symbols.DB.driver) private db: IMongoDriver
     ) {
         super()
         super.init(this.db.buildingModel)

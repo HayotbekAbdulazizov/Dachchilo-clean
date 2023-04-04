@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import {ICategoryDocument} from "./CategoryModel";
-import { Types } from "mongoose";
 import {ICommentDocument} from "./CommentModel";
 
 
@@ -16,13 +15,25 @@ export enum TERM {
 
 
 
+export interface IImage {
+    fieldname: string,
+    originalname: string,
+    encoding: string,
+    mimetype: string;
+    destination: string;
+    filename: string,
+    path: string;
+    size: number
+}
+
+
 
 export interface IBuildingInput {
     category: ICategoryDocument['_id'];
     title: string;
     price: number;
     description: string,
-    image: string;
+    image: IImage[];
     type?: TERM,
 }
 

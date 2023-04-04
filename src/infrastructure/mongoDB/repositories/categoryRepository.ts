@@ -1,51 +1,51 @@
 import {inject, injectable} from "inversify";
 import {ICategoryDocument, ICategoryInput} from "../../../domain/models/CategoryModel";
-import {FilterQuery, Model, QueryOptions} from "mongoose";
+import {FilterQuery, QueryOptions} from "mongoose";
 import {ICategoryRepository} from "../../../domain/interfaces/repositories/CategoryRepository";
 import {IMongoDriver} from "../driver";
 import {symbols} from "../../../dependencies/symbols";
 import {globalErrorHandler} from "../../../shared/utils/errorHandler";
+import {BaseRepository} from "./BaseRepository";
 
 
 @injectable()
-export class CategoryRepository implements ICategoryRepository{
-
-    private model!: Model<ICategoryDocument>
+export class CategoryRepository extends BaseRepository<ICategoryDocument, ICategoryInput> implements ICategoryRepository {
 
     constructor(
         @inject<IMongoDriver>(symbols.DB.driver) private db: IMongoDriver
     ) {
-        this.model = this.db.categoryModel
+        super()
+        super.init(this.db.categoryModel)
     }
+
 
 
     @globalErrorHandler
     async create(data: ICategoryInput): Promise<ICategoryDocument> {
-        return await this.model.create(data) ;
+        return await super.create(data) ;
     }
-
 
     @globalErrorHandler
     async deleteOne(query: FilterQuery<ICategoryDocument>, options: QueryOptions): Promise<ICategoryDocument | null> {
-        return this.model.findOneAndDelete(query, options);
+        return super.deleteOne(query, options);
     }
 
 
     @globalErrorHandler
     async get(query: FilterQuery<ICategoryDocument>): Promise<ICategoryDocument[]> {
-        return this.model.find(query);
+        return super.get(query);
     }
 
 
     @globalErrorHandler
     async getOne(query: FilterQuery<ICategoryDocument>): Promise<ICategoryDocument | null> {
-        return this.model.findOne(query);
+        return super.getOne(query);
     }
 
 
     @globalErrorHandler
     async updateOne(query: FilterQuery<ICategoryDocument>, data: ICategoryInput, options: QueryOptions = {}): Promise<ICategoryDocument | null> {
-        return this.model.findOneAndUpdate(query, data, options);
+        return super.updateOne(query, data, options);
     }
 
 }
