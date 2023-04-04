@@ -8,6 +8,8 @@ import {ICategoryRepository} from "../../../domain/interfaces/repositories/Categ
 import {CategoryRepository} from "../../../infrastructure/mongoDB/repositories/categoryRepository";
 import {ICommentRepository} from "../../../domain/interfaces/repositories/CommentRepository";
 import {CommentRepository} from "../../../infrastructure/mongoDB/repositories/commentRepository";
+import {IUserRepository} from "../../../domain/interfaces/repositories/UserRepository";
+import {UserRepository} from "../../../infrastructure/mongoDB/repositories/userRepository";
 
 
 export const InfrastructureModule = new ContainerModule((bind: interfaces.Bind) => {
@@ -15,4 +17,5 @@ export const InfrastructureModule = new ContainerModule((bind: interfaces.Bind) 
     bind<IBuildingRepository>(symbols.DB.repositories.buildingRepository).to(BuildingRepository);
     bind<ICategoryRepository>(symbols.DB.repositories.categoryRepository).to(CategoryRepository)
     bind<ICommentRepository>(symbols.DB.repositories.commentRepository).to(CommentRepository)
+    bind<IUserRepository>(symbols.DB.repositories.userRepository).to(UserRepository)
 })

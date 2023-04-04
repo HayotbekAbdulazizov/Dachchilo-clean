@@ -39,6 +39,15 @@ import { DeleteOneCategoryByIdUseCase, IDeleteOneCategoryByIdUseCase } from "../
 import { IGetOneCategoryByIdUseCase, GetOneCategoryByIdUseCase } from "../../../modules/app-apis/use-cases/category-api/getOneById";
 import {UpdateOneCommentByIdUseCase, IUpdateOneCommentByIdUseCase} from "../../../modules/app-apis/use-cases/comment-api/updateOneById";
 import {GetCommentByIdUseCase, IGetCommentByIdUseCase} from "../../../modules/app-apis/use-cases/comment-api/getOne";
+import {IRegisterUserUseCase, RegisterUserUseCase} from "../../../modules/app-apis/use-cases/user-api/register";
+import {ILoginUserUseCase, LoginUserUseCase} from "../../../modules/app-apis/use-cases/user-api/login";
+import {DeleteUserByIdUseCase, IDeleteUserByIdUseCase} from "../../../modules/app-apis/use-cases/user-api/deleteById";
+import {IUpdateUserByIdUseCase, UpdateUserByIdUseCase} from "../../../modules/app-apis/use-cases/user-api/updateById";
+import {GetUserByIdUseCase, IGetUserByIdUseCase} from "../../../modules/app-apis/use-cases/user-api/getById";
+
+
+
+
 
 export const UseCasesModule = new ContainerModule((bind: interfaces.Bind) => {
     bind<IGetAllBuildingsUseCase>(symbols.useCases.building.getAll).to(GetAllBuildingsUseCase)
@@ -62,6 +71,12 @@ export const UseCasesModule = new ContainerModule((bind: interfaces.Bind) => {
     bind<IUpdateOneCommentByIdUseCase>(symbols.useCases.comment.updateOneById).to(UpdateOneCommentByIdUseCase)
     bind<IGetCommentByIdUseCase>(symbols.useCases.comment.getById).to(GetCommentByIdUseCase)
 
+
+    bind<IRegisterUserUseCase>(symbols.useCases.user.register).to(RegisterUserUseCase)
+    bind<ILoginUserUseCase>(symbols.useCases.user.login).to(LoginUserUseCase)
+    bind<IDeleteUserByIdUseCase>(symbols.useCases.user.deleteById).to(DeleteUserByIdUseCase)
+    bind<IUpdateUserByIdUseCase>(symbols.useCases.user.updateById).to(UpdateUserByIdUseCase)
+    bind<IGetUserByIdUseCase>(symbols.useCases.user.getById).to(GetUserByIdUseCase)
 
 
 })

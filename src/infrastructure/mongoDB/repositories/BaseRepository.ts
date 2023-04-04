@@ -27,7 +27,7 @@ export class BaseRepository<IModel, IInput> implements IBaseRepository<IModel, I
 
     @globalErrorHandler
     public async create(data: IInput): Promise<IModel> {
-        return this.model.create(data)
+        return await this.model.create(data)
         // return entity.save();
     }
 

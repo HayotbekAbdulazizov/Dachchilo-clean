@@ -48,8 +48,8 @@ export class BuildingController implements IBuildingController {
 
 
     @errorHandlerController
-    async getAll(_req: Request, res: Response): Promise<Response>{
-        const responseData = await this.getAllBuildingsUseCase.execute({})
+    async getAll(req: Request, res: Response): Promise<Response>{
+        const responseData = await this.getAllBuildingsUseCase.execute(req.query)
         return res.json(responseData);
     }
 
@@ -59,9 +59,9 @@ export class BuildingController implements IBuildingController {
         dataValidator(createBuildingSchema ,req.body)
 
         const images = req.files as Express.Multer.File[];
-        console.log(images, "--- Images")
         const data = req.body
         data['image'] = images
+
         const building = await this.createBuildingUseCase.execute(data)
         return res.status(201).send(building)
     }

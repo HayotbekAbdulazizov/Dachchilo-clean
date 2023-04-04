@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import { IUserDocument } from "../../../domain/models/UserModel";
 
 
-const userSchema = new mongoose.Schema({
+export const UserSchema = new mongoose.Schema({
         email: {
             type: String,
             required:true,
@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
 
 
 
-userSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function (next) {
     let user = this as IUserDocument;
 
     if (!user.isModified("password")) {
@@ -51,12 +51,7 @@ userSchema.pre("save", async function (next) {
 
 
 
-userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
+UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, this.password).catch((_e)=> false)
 }
-
-
-
-
-export const UserModel = mongoose.model<IUserDocument>("User", userSchema)
 

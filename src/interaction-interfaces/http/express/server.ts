@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import {ICategoryController} from "./controllers/categoryController";
 import {ICommentController} from "./controllers/commentController";
 import { upload} from "../../../shared/utils/multerUpload";
+import {IUserController} from "./controllers/userController";
 
 
 
@@ -34,9 +35,14 @@ export class Server implements IServer {
 
         @inject<ICommentController>(symbols.controllers.commentController)
         private commentController: ICommentController,
+
+        @inject<IUserController>(symbols.controllers.userController)
+        private userController: IUserController
     ){
         this.app = express()        // Should try to put it to container
     }
+
+
 
 
     init(): void {
@@ -76,6 +82,10 @@ export class Server implements IServer {
         this.app.delete('/comment/:id', this.commentController.deleteOne.bind(this.commentController))
         this.app.put('/comment/:id', this.commentController.updateOne.bind(this.commentController))
         this.app.delete('/comment/building', this.commentController.deleteByBuilding.bind(this.commentController))
+
+        this.app.post('/user/register', this.userController.register.bind(this.userController))
+        this.app.post('/user/login', this.userController.login.bind(this.userController))
+
 
     }
 

@@ -3,6 +3,7 @@ export const symbols = {
          buildingController: Symbol.for('BuildingController'),
          categoryController: Symbol.for('CategoryController'),
          commentController: Symbol.for('CommentController'),
+         userController: Symbol.for('UserController')
      },
 
 
@@ -33,6 +34,15 @@ export const symbols = {
              deleteByBuilding: Symbol.for('deleteCommentsByBuildingUseCase'),
              getByBuilding: Symbol.for('getCommentByBuildingUseCase'),
              getById: Symbol.for('getCommentByIdUseCase')
+        },
+
+        user: {
+            register: Symbol.for('registerUserUseCase'),
+            login: Symbol.for('loginUserUseCase'),
+            deleteById: Symbol.for('deleteUserByIdUseCase'),
+            // getByEmail: Symbol.for('getUserByEmailUseCase'),
+            updateById: Symbol.for('updateUserByIdUseCase'),
+            getById: Symbol.for('getUserByIdUseCase')
         }
     },
 
@@ -46,6 +56,7 @@ export const symbols = {
             buildingRepository: Symbol.for('BuildingRepository'),
             categoryRepository: Symbol.for('CategoryRepository'),
             commentRepository: Symbol.for('CommentRepository'),
+            userRepository: Symbol.for('UserRepository')
         }
     },
 

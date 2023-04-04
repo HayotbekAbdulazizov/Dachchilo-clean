@@ -8,17 +8,26 @@ export enum ROLE {
 }
 
 
-export interface IUserInput {
+export interface IUserRegistrationInput {
     email: string;
     name: string;
     password: string;
     role?: ROLE
 }
 
+
 export interface IUserLoginInput {
     email: string;
     password: string;
 }
+
+
+
+
+export type IPublicUser = Pick<IUserDocument, 'email' | 'name'>;
+
+
+
 
 export interface IUserDocument extends mongoose.Document {
     email: string;
