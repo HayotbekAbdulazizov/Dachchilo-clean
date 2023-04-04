@@ -1,9 +1,11 @@
+import { Request} from "express";
 import { ROLE } from "../../domain/models/UserModel";
 import { get } from "lodash";
 import { verifyJwt } from "./jwt";
 
 
-export const jwtAuth = (req: Request ,role: ROLE[] | null = null) => {
+
+export const jwtAuth = (req: Request, role: ROLE[] | null = null) => {
 
         const accessToken = get(req, "headers.authorization", "").replace('Bearer ', "")
 
@@ -24,6 +26,5 @@ export const jwtAuth = (req: Request ,role: ROLE[] | null = null) => {
         }
 
         return response.decoded
-
 
 }

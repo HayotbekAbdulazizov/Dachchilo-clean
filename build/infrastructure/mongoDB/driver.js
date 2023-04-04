@@ -13,6 +13,7 @@ const commentSchema_1 = require("./schemas/commentSchema");
 const mongoose_1 = require("mongoose");
 const inversify_1 = require("inversify");
 require("reflect-metadata");
+const userSchema_1 = require("./schemas/userSchema");
 let MongoDriver = class MongoDriver {
     async init() {
         return new Promise((resolve) => {
@@ -27,6 +28,7 @@ let MongoDriver = class MongoDriver {
         this.buildingModel = this.db.model('Building', buildingSchema_1.BuildingSchema);
         this.categoryModel = this.db.model('Category', categorySchema_1.CategorySchema);
         this.commentModel = this.db.model('Comment', commentSchema_1.CommentSchema);
+        this.userModel = this.db.model('User', userSchema_1.UserSchema);
         console.log(' - Db models are created - ');
     }
 };

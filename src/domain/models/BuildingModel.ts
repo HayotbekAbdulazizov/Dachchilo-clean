@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import {ICategoryDocument} from "./CategoryModel";
 import {ICommentDocument} from "./CommentModel";
+import {IUserDocument} from "./UserModel";
 
 
 export enum STATUS {
@@ -39,6 +40,7 @@ export interface IBuildingInput {
 
 
 export interface IBuildingDocument extends IBuildingInput, mongoose.Document{
+    author: IUserDocument['_id']
     status?: STATUS,
     createdAt: Date;
     updatedAt: Date;

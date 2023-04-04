@@ -19,6 +19,8 @@ const symbols_1 = require("../../../../dependencies/symbols");
 const errorHandler_1 = require("../../../../shared/utils/errorHandler");
 const incomingDataValidator_1 = require("../../../../shared/validators/incomingDataValidator");
 const buildingSchema_1 = require("../validationSchemas/buildingSchema");
+const auth_1 = require("../../../../shared/utils/auth");
+const UserModel_1 = require("../../../../domain/models/UserModel");
 let BuildingController = class BuildingController {
     constructor(getAllBuildingsUseCase, createBuildingUseCase, getBuildingByIdUseCase, updateBuildingByIdUseCase, deleteBuildingByIdUseCase) {
         this.getAllBuildingsUseCase = getAllBuildingsUseCase;
@@ -27,17 +29,17 @@ let BuildingController = class BuildingController {
         this.updateBuildingByIdUseCase = updateBuildingByIdUseCase;
         this.deleteBuildingByIdUseCase = deleteBuildingByIdUseCase;
     }
-    async getAll(_req, res) {
-        const responseData = await this.getAllBuildingsUseCase.execute({});
+    async getAll(req, res) {
+        const responseData = await this.getAllBuildingsUseCase.execute(req.query);
         return res.json(responseData);
     }
     async create(req, res) {
         (0, incomingDataValidator_1.dataValidator)(buildingSchema_1.createBuildingSchema, req.body);
+        const user = (0, auth_1.jwtAuth)(req, [UserModel_1.ROLE.USER]);
         const images = req.files;
-        console.log(images, "--- Images");
-        const data = req.body;
-        data['image'] = images;
-        const building = await this.createBuildingUseCase.execute(data);
+        req.body['image'] = images;
+        req.body['author'] = user;
+        const building = await this.createBuildingUseCase.execute(req.body);
         return res.status(201).send(building);
     }
     async getById(req, res) {

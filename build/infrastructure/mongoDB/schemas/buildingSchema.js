@@ -12,6 +12,10 @@ exports.BuildingSchema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "Category"
     },
+    author: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "User"
+    },
     status: {
         type: String,
         enum: BuildingModel_1.STATUS,

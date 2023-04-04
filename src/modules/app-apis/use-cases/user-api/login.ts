@@ -23,6 +23,7 @@ export class LoginUserUseCase implements ILoginUserUseCase{
 
     @globalErrorHandler
     async execute(data: IUserLoginInput): Promise<IUserDocument> {
+        console.log("-- Email -- ", data.email)
         const user = await this.userRepository.getOne({email: data.email})
 
         if(!user){

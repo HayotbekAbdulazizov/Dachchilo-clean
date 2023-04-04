@@ -24,10 +24,11 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const multerUpload_1 = require("../../../shared/utils/multerUpload");
 let Server = class Server {
-    constructor(buildingController, categoryController, commentController) {
+    constructor(buildingController, categoryController, commentController, userController) {
         this.buildingController = buildingController;
         this.categoryController = categoryController;
         this.commentController = commentController;
+        this.userController = userController;
         this.app = (0, express_1.default)(); // Should try to put it to container
     }
     init() {
@@ -59,6 +60,8 @@ let Server = class Server {
         this.app.delete('/comment/:id', this.commentController.deleteOne.bind(this.commentController));
         this.app.put('/comment/:id', this.commentController.updateOne.bind(this.commentController));
         this.app.delete('/comment/building', this.commentController.deleteByBuilding.bind(this.commentController));
+        this.app.post('/user/register', this.userController.register.bind(this.userController));
+        this.app.post('/user/login', this.userController.login.bind(this.userController));
     }
 };
 Server = __decorate([
@@ -66,6 +69,7 @@ Server = __decorate([
     __param(0, (0, inversify_1.inject)(symbols_1.symbols.controllers.buildingController)),
     __param(1, (0, inversify_1.inject)(symbols_1.symbols.controllers.categoryController)),
     __param(2, (0, inversify_1.inject)(symbols_1.symbols.controllers.commentController)),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __param(3, (0, inversify_1.inject)(symbols_1.symbols.controllers.userController)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], Server);
 exports.Server = Server;

@@ -1,20 +1,18 @@
 import {Request, Response} from "express";
-import {
-    IGetAllBuildingsUseCase
-} from "../../../../modules/app-apis/use-cases/buildings-api/getAll";
+import {IGetAllBuildingsUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/getAll";
 
 import {inject, injectable} from "inversify";
 import "reflect-metadata"
 import {symbols} from "../../../../dependencies/symbols";
 import {ICreateBuildingUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/create";
 import {IGetBuildingByIdUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/getById";
-import { IUpdateBuildingByIdUseCase } from "../../../../modules/app-apis/use-cases/buildings-api/updateById";
+import {IUpdateBuildingByIdUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/updateById";
 import {IDeleteBuildingByIdUseCase} from "../../../../modules/app-apis/use-cases/buildings-api/deleteById";
 import {errorHandlerController} from "../../../../shared/utils/errorHandler";
 import {dataValidator} from "../../../../shared/validators/incomingDataValidator";
-import { createBuildingSchema } from "../validationSchemas/buildingSchema";
-
-
+import {createBuildingSchema, updateBuildingSchema} from "../validationSchemas/buildingSchema";
+import {jwtAuth} from "../../../../shared/utils/auth";
+import {ROLE} from "../../../../domain/models/UserModel";
 
 
 
@@ -47,6 +45,7 @@ export class BuildingController implements IBuildingController {
     ) {}
 
 
+
     @errorHandlerController
     async getAll(req: Request, res: Response): Promise<Response>{
         const responseData = await this.getAllBuildingsUseCase.execute(req.query)
@@ -54,17 +53,21 @@ export class BuildingController implements IBuildingController {
     }
 
 
+
     @errorHandlerController
     async create(req: Request, res: Response): Promise<Response>{
         dataValidator(createBuildingSchema ,req.body)
+        const user = jwtAuth(req, [ ROLE.USER ])
 
         const images = req.files as Express.Multer.File[];
-        const data = req.body
-        data['image'] = images
 
-        const building = await this.createBuildingUseCase.execute(data)
+        req.body['image'] = images
+        req.body['author'] = user
+
+        const building = await this.createBuildingUseCase.execute(req.body)
         return res.status(201).send(building)
     }
+
 
 
     @errorHandlerController
@@ -75,21 +78,40 @@ export class BuildingController implements IBuildingController {
     }
 
 
+
     @errorHandlerController
     async updateById(req: Request, res: Response): Promise<Response>{
+        const user = jwtAuth(req, [ ROLE.USER ])
+
         const id = req.params.id
         const data = req.body
-        const building = await this.updateBuildingByIdUseCase.execute(id, data)
-        return res.status(300).send(building)
+
+        const building = await this.getBuildingByIdUseCase.execute(id)
+
+        if (!building) throw new Error("Building not found")
+        if(building.author !== user._id) throw new Error("You are not the author")
+
+        dataValidator(updateBuildingSchema, req.body)
+
+        const updatedBuilding = await this.updateBuildingByIdUseCase.execute(id, data)
+        return res.status(300).send(updatedBuilding)
 
     }
 
 
+
     @errorHandlerController
     async deleteById(req: Request, res: Response): Promise<Response>{
+        const user = jwtAuth(req, [ ROLE.USER, ROLE.ADMIN ])
+
         const id = req.params.id
-        const building = await this.deleteBuildingByIdUseCase.execute(id)
-        return res.status(203).json(building)
+        const building = await this.getBuildingByIdUseCase.execute(id)
+
+        if(!building) throw new Error('Building was not found')
+        if(building.author !== user._id) throw new Error('You are not the author')
+
+        const deletedBuilding = await this.deleteBuildingByIdUseCase.execute(id)
+        return res.status(203).json(deletedBuilding)
     }
 
 

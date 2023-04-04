@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import {NextFunction, Request, Response} from 'express';
 
 export function errorHandlerController(_target: any, _key: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
@@ -35,8 +35,7 @@ export function globalErrorHandler(
     ) {
         console.log(`Calling function ${originalMethod.name}`);
         try {
-            const result = await originalMethod.call(this, req, res, next);
-            return result;
+            return await originalMethod.call(this, req, res, next);
         } catch (err: any) {
             throw new Error(err.message)
         }

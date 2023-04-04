@@ -11,6 +11,11 @@ export const BuildingSchema = new mongoose.Schema({
             ref: "Category"
         },
 
+        author: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+
         status: {
             type: String,
             enum: STATUS,

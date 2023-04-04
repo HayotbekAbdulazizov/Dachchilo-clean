@@ -73,12 +73,11 @@ export class UserController implements IUserController {
 
 
 
-
+    @errorHandlerController
     async login(req: Request, res: Response): Promise<Response>{
         dataValidator(loginUserSchema, req.body)
 
         const user = await this.loginUserUseCase.execute(req.body)
-        console.log(user, "-- User");
         const token = signJwt(user.toObject())
 
         const response = {
@@ -94,24 +93,24 @@ export class UserController implements IUserController {
 
     @errorHandlerController
     async updateById(req: Request, res: Response): Promise<Response>{
-        const user = jwtAuth(req, [ROLE.ADMIN])
+        const decodedUser = jwtAuth(req, [ROLE.ADMIN, ROLE.USER])
 
-        dataValidator(updateUserSchema, req.body)
         const user = await this.getUserByIdUseCase.execute(req.params.id)
-
         if (!user) {
             throw new Error("User Not found")
         }
 
-        const decodedUser = verifyJwt(req.headers.authorization)
         if(user._id !== decodedUser._id){
             throw new Error('You are not the author')
         }
+
+        dataValidator(updateUserSchema, req.body)
 
         const id = req.params.id
         const data = req.body
 
         const updatedUser = await this.updateUserByIdUseCase.execute(id, data)
+
         if (!updatedUser) throw new Error('Something went wring in updating user ')
 
         const token = signJwt(updatedUser)
