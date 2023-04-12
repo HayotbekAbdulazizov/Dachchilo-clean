@@ -58,8 +58,11 @@ export class BuildingController implements IBuildingController {
     async create(req: Request, res: Response): Promise<Response>{
         dataValidator(createBuildingSchema ,req.body)
         const user = jwtAuth(req, [ ROLE.USER ])
-
+        console.log("--- before images section ---");
+        
         const images = req.files as Express.Multer.File[];
+        console.log(images);
+        
 
         req.body['image'] = images
         req.body['author'] = user
@@ -107,8 +110,12 @@ export class BuildingController implements IBuildingController {
         const id = req.params.id
         const building = await this.getBuildingByIdUseCase.execute(id)
 
+        console.log(building.author._id)
+        console.log(user._id)
+        console.log(building.author._id == user._id)
+
         if(!building) throw new Error('Building was not found')
-        if(building.author !== user._id) throw new Error('You are not the author')
+        if(building.author._id != user._id) throw new Error('You are not the author')
 
         const deletedBuilding = await this.deleteBuildingByIdUseCase.execute(id)
         return res.status(203).json(deletedBuilding)

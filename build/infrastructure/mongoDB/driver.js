@@ -17,7 +17,7 @@ const userSchema_1 = require("./schemas/userSchema");
 let MongoDriver = class MongoDriver {
     async init() {
         return new Promise((resolve) => {
-            this.db = (0, mongoose_1.createConnection)('mongodb://127.0.0.1:27017/dachchilo2');
+            this.db = (0, mongoose_1.createConnection)('mongodb+srv://abdulazizovdev:123@cluster0.inovmu4.mongodb.net');
             this.db.once('open', async () => {
                 await this.createModels();
                 resolve();

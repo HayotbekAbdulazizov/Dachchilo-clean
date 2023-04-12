@@ -22,13 +22,12 @@ export class AppContainer {
 
     static async init(){
         const server = this.Services.get<IServer>(symbols.server)
-        console.log(server);
         server.init()
-
+        
+        console.log('--- App started ,initialized ---')
         const db = this.Services.get<IMongoDriver>(symbols.DB.driver)
         await db.init()
 
-        console.log('--- App started ,initialized ---')
     }
 
 }

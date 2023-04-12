@@ -35,7 +35,7 @@ export class MongoDriver implements IMongoDriver {
 
     async init(): Promise<void>{
         return new Promise((resolve) => {
-            this.db = createConnection('mongodb://127.0.0.1:27017/dachchilo2');
+            this.db = createConnection('mongodb+srv://abdulazizovdev:123@cluster0.inovmu4.mongodb.net');
 
             this.db.once('open',  async () => {
                 await this.createModels()

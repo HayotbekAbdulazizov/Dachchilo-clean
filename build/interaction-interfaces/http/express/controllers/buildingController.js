@@ -36,7 +36,9 @@ let BuildingController = class BuildingController {
     async create(req, res) {
         (0, incomingDataValidator_1.dataValidator)(buildingSchema_1.createBuildingSchema, req.body);
         const user = (0, auth_1.jwtAuth)(req, [UserModel_1.ROLE.USER]);
+        console.log("--- before images section ---");
         const images = req.files;
+        console.log(images);
         req.body['image'] = images;
         req.body['author'] = user;
         const building = await this.createBuildingUseCase.execute(req.body);
@@ -48,15 +50,31 @@ let BuildingController = class BuildingController {
         return res.status(200).send(building);
     }
     async updateById(req, res) {
+        const user = (0, auth_1.jwtAuth)(req, [UserModel_1.ROLE.USER]);
         const id = req.params.id;
         const data = req.body;
-        const building = await this.updateBuildingByIdUseCase.execute(id, data);
-        return res.status(300).send(building);
+        const building = await this.getBuildingByIdUseCase.execute(id);
+        if (!building)
+            throw new Error("Building not found");
+        if (building.author !== user._id)
+            throw new Error("You are not the author");
+        (0, incomingDataValidator_1.dataValidator)(buildingSchema_1.updateBuildingSchema, req.body);
+        const updatedBuilding = await this.updateBuildingByIdUseCase.execute(id, data);
+        return res.status(300).send(updatedBuilding);
     }
     async deleteById(req, res) {
+        const user = (0, auth_1.jwtAuth)(req, [UserModel_1.ROLE.USER, UserModel_1.ROLE.ADMIN]);
         const id = req.params.id;
-        const building = await this.deleteBuildingByIdUseCase.execute(id);
-        return res.status(203).json(building);
+        const building = await this.getBuildingByIdUseCase.execute(id);
+        console.log(building.author._id);
+        console.log(user._id);
+        console.log(building.author._id == user._id);
+        if (!building)
+            throw new Error('Building was not found');
+        if (building.author._id != user._id)
+            throw new Error('You are not the author');
+        const deletedBuilding = await this.deleteBuildingByIdUseCase.execute(id);
+        return res.status(203).json(deletedBuilding);
     }
 };
 __decorate([
