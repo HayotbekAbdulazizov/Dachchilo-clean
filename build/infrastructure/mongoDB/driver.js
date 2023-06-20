@@ -17,7 +17,8 @@ const userSchema_1 = require("./schemas/userSchema");
 let MongoDriver = class MongoDriver {
     async init() {
         return new Promise((resolve) => {
-            this.db = (0, mongoose_1.createConnection)('mongodb+srv://abdulazizovdev:123@cluster0.inovmu4.mongodb.net');
+            // this.db = createConnection('mongodb+srv://abdulazizovdev:123@cluster0.inovmu4.mongodb.net');
+            this.db = (0, mongoose_1.createConnection)('mongodb://127.0.0.1:27017/dachchilo');
             this.db.once('open', async () => {
                 await this.createModels();
                 resolve();
@@ -29,7 +30,7 @@ let MongoDriver = class MongoDriver {
         this.categoryModel = this.db.model('Category', categorySchema_1.CategorySchema);
         this.commentModel = this.db.model('Comment', commentSchema_1.CommentSchema);
         this.userModel = this.db.model('User', userSchema_1.UserSchema);
-        console.log(' - Db models are created - ');
+        console.log(' --- Database models are created --- ');
     }
 };
 MongoDriver = __decorate([

@@ -35,7 +35,8 @@ export class MongoDriver implements IMongoDriver {
 
     async init(): Promise<void>{
         return new Promise((resolve) => {
-            this.db = createConnection('mongodb+srv://abdulazizovdev:123@cluster0.inovmu4.mongodb.net');
+            // this.db = createConnection('mongodb+srv://abdulazizovdev:123@cluster0.inovmu4.mongodb.net');
+            this.db = createConnection('mongodb://127.0.0.1:27017/dachchilo');
 
             this.db.once('open',  async () => {
                 await this.createModels()
@@ -51,7 +52,7 @@ export class MongoDriver implements IMongoDriver {
         this.commentModel = this.db.model<ICommentDocument>('Comment', CommentSchema);
         this.userModel = this.db.model<IUserDocument>('User', UserSchema) ;
 
-        console.log(' - Db models are created - ')
+        console.log(' --- Database models are created --- ')
     }
 }
 

@@ -8,7 +8,6 @@ async function start() {
     console.log("--- App started Init ---");
     const server = app_container_1.AppContainer.Services.get(symbols_1.symbols.server);
     server.init();
-    console.log("Server ----");
     await server.listen();
 }
 setImmediate(start);

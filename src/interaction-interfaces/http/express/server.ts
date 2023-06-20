@@ -9,6 +9,10 @@ import {ICategoryController} from "./controllers/categoryController";
 import {ICommentController} from "./controllers/commentController";
 import { upload} from "../../../shared/utils/multerUpload";
 import {IUserController} from "./controllers/userController";
+import cluster from  "cluster"
+import os from 'os'
+
+
 
 
 
@@ -46,18 +50,46 @@ export class Server implements IServer {
 
 
     init(): void {
-        this.app.use(cors())
-        this.app.use(express.json())
-        this.app.use(upload)
-        dotenv.config();
-        this.router()
+          this.app.use(cors())
+          this.app.use(express.json())
+          this.app.use(upload)
+          dotenv.config();
+          this.router()
+
+
     }
 
 
     async listen(): Promise<void>{
-        this.app.listen(3000, ()=>{
-            console.log("--- App started listening ---")
-        })
+
+        const numCPUs = os.cpus().length;
+        
+        if (cluster.isPrimary) {
+          console.log(`Master ${process.pid} is running`);
+        
+          // Fork workers equal to the number of CPUs
+          for (let i = 0; i < numCPUs-1; i++) {
+            cluster.fork();
+          }
+        
+          // Listen for worker exit event
+          cluster.on('exit', (worker, code, signal) => {
+            console.log(`Worker ${worker.process.pid} died with code ${code} and signal ${signal}`);
+            console.log('Starting a new worker');
+            cluster.fork();
+          });
+        } else {
+          // Start the Express app
+          let port = 3000
+        //   if(cluster.worker){
+            port = 3000 + cluster.worker!.id as number;
+        //   }
+
+          this.app.listen(port, () => {
+            console.log(`Worker ${process.pid} started and listening on port ${port}`);
+          });
+        }
+
     }
 
 
@@ -90,4 +122,16 @@ export class Server implements IServer {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

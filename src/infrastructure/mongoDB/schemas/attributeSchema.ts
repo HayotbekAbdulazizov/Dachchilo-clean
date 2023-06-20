@@ -9,7 +9,6 @@ const AttributeSchema = new mongoose.Schema({
             ref: "Category"
         },
 
-
         title: {
             type: String,
             required: true

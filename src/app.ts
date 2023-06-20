@@ -10,7 +10,6 @@ async function start(): Promise<void> {
     
     const server = AppContainer.Services.get<IServer>(symbols.server);
     server.init()
-    console.log("Server ----");
     
     await server.listen();
 

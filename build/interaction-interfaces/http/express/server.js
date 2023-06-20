@@ -23,6 +23,8 @@ require("reflect-metadata");
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const multerUpload_1 = require("../../../shared/utils/multerUpload");
+const cluster_1 = __importDefault(require("cluster"));
+const os_1 = __importDefault(require("os"));
 let Server = class Server {
     constructor(buildingController, categoryController, commentController, userController) {
         this.buildingController = buildingController;
@@ -39,9 +41,30 @@ let Server = class Server {
         this.router();
     }
     async listen() {
-        this.app.listen(3000, () => {
-            console.log("--- App started listening ---");
-        });
+        const numCPUs = os_1.default.cpus().length;
+        if (cluster_1.default.isPrimary) {
+            console.log(`Master ${process.pid} is running`);
+            // Fork workers equal to the number of CPUs
+            for (let i = 0; i < numCPUs - 1; i++) {
+                cluster_1.default.fork();
+            }
+            // Listen for worker exit event
+            cluster_1.default.on('exit', (worker, code, signal) => {
+                console.log(`Worker ${worker.process.pid} died with code ${code} and signal ${signal}`);
+                console.log('Starting a new worker');
+                cluster_1.default.fork();
+            });
+        }
+        else {
+            // Start the Express app
+            let port = 3000;
+            //   if(cluster.worker){
+            port = 3000 + cluster_1.default.worker.id;
+            //   }
+            this.app.listen(port, () => {
+                console.log(`Worker ${process.pid} started and listening on port ${port}`);
+            });
+        }
     }
     router() {
         this.app.get('/buildings', this.buildingController.getAll.bind(this.buildingController));
